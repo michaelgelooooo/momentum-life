@@ -93,3 +93,28 @@ export function finalizeDailyReport() {
 
     return finalizedReport;
 }
+
+export function addTaskToAction(report, actionId, taskName) {
+    return {
+        ...report,
+
+        actions: report.actions.map((action) => {
+            if (action.id !== actionId) {
+                return action;
+            }
+
+            return {
+                ...action,
+
+                tasks: [
+                    ...action.tasks,
+                    {
+                        id: generateId("task"),
+                        name: taskName,
+                        status: "pending",
+                    },
+                ],
+            };
+        }),
+    };
+}

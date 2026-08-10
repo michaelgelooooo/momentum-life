@@ -1,4 +1,4 @@
-import { defaultActions } from "../data/defaultActions";
+import { seedActions } from "../data/seedActions";
 import { STORAGE_KEYS } from "./storageKeys";
 
 export function getActions() {
@@ -7,10 +7,10 @@ export function getActions() {
     if (!stored) {
         localStorage.setItem(
             STORAGE_KEYS.ACTIONS,
-            JSON.stringify(defaultActions)
+            JSON.stringify(seedActions)
         );
 
-        return defaultActions;
+        return seedActions;
     }
 
     return JSON.parse(stored);

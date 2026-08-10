@@ -1,4 +1,4 @@
-import { defaultDailyPlans } from "../data/defaultPlans";
+import { defaultDailyPlans } from "../data/seedDailyPlans";
 import { STORAGE_KEYS } from "./storageKeys";
 
 export function getDailyPlans() {

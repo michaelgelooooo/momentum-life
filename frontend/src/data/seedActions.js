@@ -1,4 +1,4 @@
-export const defaultActions = [
+export const seedActions = [
     {
         id: "action-001",
         name: "Wake Up",
