@@ -12,6 +12,8 @@ import { generateId } from "../../utils/ids";
 function Today() {
     const [report, setReport] = useState(null);
     const [actions, setActions] = useState([]);
+    const [selectedActionId, setSelectedActionId] = useState("");
+    const [actionTime, setActionTime] = useState("");
 
     useEffect(() => {
         const storedActions = getActions();
@@ -35,7 +37,7 @@ function Today() {
         return <div>Loading...</div>;
     }
 
-    function addAction(action) {
+    function addAction(action, time) {
         setReport((currentReport) => {
             const updatedReport = {
                 ...currentReport,
@@ -45,8 +47,7 @@ function Today() {
                         id: generateId("day-action"),
                         actionId: action.id,
                         name: action.name,
-                        time: null,
-                        order: currentReport.actions.length + 1,
+                        time,
                         status: "pending",
                         tasks: [],
                     },
@@ -182,124 +183,188 @@ function Today() {
             </p>
 
             <div className="mb-6">
-                <select
-                    className="select select-bordered"
-                    defaultValue=""
-                    onChange={(event) => {
+                <form
+                    className="mb-6 flex gap-2"
+                    onSubmit={(event) => {
+                        event.preventDefault();
+
+                        if (!selectedActionId || !actionTime) {
+                            return;
+                        }
+
                         const action = actions.find(
-                            (action) => action.id === event.target.value
+                            (action) => action.id === selectedActionId
                         );
 
                         if (!action) {
                             return;
                         }
 
-                        addAction(action);
-                        event.target.value = "";
+                        addAction(action, actionTime);
+
+                        setSelectedActionId("");
+                        setActionTime("");
                     }}
                 >
-                    <option value="" disabled>
-                        Add Action
-                    </option>
-
-                    {actions.map((action) => (
-                        <option
-                            key={action.id}
-                            value={action.id}
-                        >
-                            {action.name}
+                    <select
+                        className="select select-bordered flex-1"
+                        value={selectedActionId}
+                        onChange={(event) => {
+                            setSelectedActionId(event.target.value);
+                        }}
+                    >
+                        <option value="" disabled>
+                            Select Action
                         </option>
-                    ))}
-                </select>
+
+                        {actions.map((action) => (
+                            <option
+                                key={action.id}
+                                value={action.id}
+                            >
+                                {action.name}
+                            </option>
+                        ))}
+                    </select>
+
+                    <input
+                        type="time"
+                        className="input input-bordered"
+                        value={actionTime}
+                        onChange={(event) => {
+                            setActionTime(event.target.value);
+                        }}
+                    />
+
+                    <button
+                        type="submit"
+                        className="btn btn-primary"
+                    >
+                        Add Action
+                    </button>
+                </form>
             </div>
 
             {report.actions.map((action) => (
                 <div
                     key={action.id}
-                    className="mb-4 rounded-box border p-4"
+                    className="card bg-base-200 mb-4"
                 >
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h2 className="font-semibold">
-                                {action.name}
-                            </h2>
-
-                            {action.time && (
+                    <div className="card-body">
+                        {/* Action Header */}
+                        <div className="flex items-center justify-between">
+                            <div>
                                 <p className="text-sm opacity-60">
                                     {action.time}
                                 </p>
-                            )}
-                        </div>
 
-                        <div className="space-x-4">
+                                <h2 className="card-title">
+                                    {action.name}
+                                </h2>
+                            </div>
+
                             <button
-                                className="btn btn-sm"
+                                className={`btn btn-sm ${action.status === "completed"
+                                    ? "btn-success"
+                                    : "btn-outline"
+                                    }`}
                                 onClick={() => toggleAction(action.id)}
                             >
                                 {action.status === "completed"
-                                    ? "Completed"
-                                    : "Complete"}
-                            </button>
-
-                            <span>
-                                {action.status}
-                            </span>
-
-                            <button
-                                className="btn btn-sm btn-error"
-                                onClick={() => deleteAction(action.id)}
-                            >
-                                Delete
+                                    ? "✓ Completed"
+                                    : "○ Complete"}
                             </button>
                         </div>
-                    </div>
 
-                    <div className="mt-3">
-                        {action.tasks.map((task) => (
-                            <div
-                                key={task.id}
-                                className="flex items-center gap-2"
+                        {/* Tasks */}
+                        <div className="mt-4">
+                            {action.tasks.length > 0 && (
+                                <div className="space-y-2">
+                                    {action.tasks.map((task) => (
+                                        <div
+                                            key={task.id}
+                                            className="flex items-center gap-2"
+                                        >
+                                            <button
+                                                className={`btn btn-xs ${task.status === "completed"
+                                                    ? "btn-success"
+                                                    : "btn-outline"
+                                                    }`}
+                                                onClick={() =>
+                                                    toggleTask(
+                                                        action.id,
+                                                        task.id
+                                                    )
+                                                }
+                                            >
+                                                {task.status === "completed"
+                                                    ? "✓"
+                                                    : "○"}
+                                            </button>
+
+                                            <span
+                                                className={`flex-1 ${task.status === "completed"
+                                                    ? "line-through opacity-50"
+                                                    : ""
+                                                    }`}
+                                            >
+                                                {task.name}
+                                            </span>
+
+                                            <button
+                                                className="btn btn-xs btn-ghost"
+                                                onClick={() =>
+                                                    deleteTask(
+                                                        action.id,
+                                                        task.id
+                                                    )
+                                                }
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Add Task */}
+                            <input
+                                type="text"
+                                className="input input-bordered input-sm mt-3 w-full"
+                                placeholder="Add task..."
+                                onKeyDown={(event) => {
+                                    if (event.key !== "Enter") {
+                                        return;
+                                    }
+
+                                    const taskName =
+                                        event.target.value.trim();
+
+                                    if (!taskName) {
+                                        return;
+                                    }
+
+                                    handleAddTask(
+                                        action.id,
+                                        taskName
+                                    );
+
+                                    event.target.value = "";
+                                }}
+                            />
+                        </div>
+
+                        {/* Action Controls */}
+                        <div className="card-actions justify-end mt-2">
+                            <button
+                                className="btn btn-sm btn-ghost"
+                                onClick={() =>
+                                    deleteAction(action.id)
+                                }
                             >
-                                <button
-                                    className="btn btn-sm"
-                                    onClick={() => toggleTask(action.id, task.id)}
-                                >
-                                    {task.status === "completed" ? "✓" : "○"}
-                                </button>
-
-                                <span className="flex-1">
-                                    {task.name}
-                                </span>
-
-                                <button
-                                    className="btn btn-sm btn-error"
-                                    onClick={() => deleteTask(action.id, task.id)}
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        ))}
-
-                        <input
-                            type="text"
-                            className="input input-bordered input-sm mt-2"
-                            placeholder="Add task..."
-                            onKeyDown={(event) => {
-                                if (event.key !== "Enter") {
-                                    return;
-                                }
-
-                                const taskName = event.target.value.trim();
-
-                                if (!taskName) {
-                                    return;
-                                }
-
-                                handleAddTask(action.id, taskName);
-
-                                event.target.value = "";
-                            }}
-                        />
+                                Delete Action
+                            </button>
+                        </div>
                     </div>
                 </div>
             ))}

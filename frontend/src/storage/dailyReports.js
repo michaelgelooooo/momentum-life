@@ -9,9 +9,9 @@ export function createDailyReport(plan, actions) {
         status: "active",
 
         actions: plan.actions
-            .map((actionId, index) => {
+            .map((planAction) => {
                 const action = actions.find(
-                    (action) => action.id === actionId
+                    (action) => action.id === planAction.actionId
                 );
 
                 if (!action) {
@@ -22,8 +22,7 @@ export function createDailyReport(plan, actions) {
                     id: generateId("day-action"),
                     actionId: action.id,
                     name: action.name,
-                    time: null,
-                    order: index + 1,
+                    time: planAction.time,
                     status: "pending",
                     tasks: [],
                 };
@@ -118,3 +117,4 @@ export function addTaskToAction(report, actionId, taskName) {
         }),
     };
 }
+

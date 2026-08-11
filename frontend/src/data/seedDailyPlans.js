@@ -4,33 +4,74 @@ export const defaultDailyPlans = [
         name: "Work Day",
         description: "My usual work-focused day.",
         actions: [
-            "action-001",
-            "action-002",
-            "action-003",
-            "action-004",
-            "action-005",
+            {
+                actionId: "action-001",
+                time: "07:00",
+            },
+            {
+                actionId: "action-002",
+                time: "08:00",
+            },
+            {
+                actionId: "action-003",
+                time: "09:00",
+            },
+            {
+                actionId: "action-004",
+                time: "18:00",
+            },
+            {
+                actionId: "action-005",
+                time: "20:00",
+            },
         ],
     },
+
     {
         id: "plan-002",
         name: "Weekend",
         description: "A flexible weekend structure.",
         actions: [
-            "action-001",
-            "action-002",
-            "action-004",
-            "action-005",
-            "action-007",
+            {
+                actionId: "action-001",
+                time: "08:00",
+            },
+            {
+                actionId: "action-002",
+                time: "09:00",
+            },
+            {
+                actionId: "action-004",
+                time: "14:00",
+            },
+            {
+                actionId: "action-005",
+                time: "19:00",
+            },
+            {
+                actionId: "action-007",
+                time: "21:00",
+            },
         ],
     },
+
     {
         id: "plan-003",
         name: "Light Day",
         description: "A simpler day when I don't want a full routine.",
         actions: [
-            "action-001",
-            "action-002",
-            "action-005",
+            {
+                actionId: "action-001",
+                time: "08:00",
+            },
+            {
+                actionId: "action-002",
+                time: "10:00",
+            },
+            {
+                actionId: "action-005",
+                time: "19:00",
+            },
         ],
     },
 ];
