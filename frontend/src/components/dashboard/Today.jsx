@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { getActions } from "../../storage/actions";
 import { getDailyPlans } from "../../storage/dailyPlans";
 import {
@@ -8,12 +7,14 @@ import {
     saveCurrentDailyReport,
 } from "../../storage/dailyReports";
 import { getSettings } from "../../storage/settings";
+import { generateId } from "../../utils/ids";
 
 function Today() {
     const [report, setReport] = useState(null);
+    const [actions, setActions] = useState([]);
 
     useEffect(() => {
-        const actions = getActions();
+        const storedActions = getActions();
         const plans = getDailyPlans();
         const settings = getSettings();
 
@@ -23,14 +24,39 @@ function Today() {
 
         const currentReport = getCurrentDailyReport(
             defaultPlan,
-            actions
+            storedActions
         );
 
+        setActions(storedActions);
         setReport(currentReport);
     }, []);
 
     if (!report) {
         return <div>Loading...</div>;
+    }
+
+    function addAction(action) {
+        setReport((currentReport) => {
+            const updatedReport = {
+                ...currentReport,
+                actions: [
+                    ...currentReport.actions,
+                    {
+                        id: generateId("day-action"),
+                        actionId: action.id,
+                        name: action.name,
+                        time: null,
+                        order: currentReport.actions.length + 1,
+                        status: "pending",
+                        tasks: [],
+                    },
+                ],
+            };
+
+            saveCurrentDailyReport(updatedReport);
+
+            return updatedReport;
+        });
     }
 
     function toggleAction(actionId) {
@@ -51,6 +77,35 @@ function Today() {
                     };
                 }),
             };
+
+            saveCurrentDailyReport(updatedReport);
+
+            return updatedReport;
+        });
+    }
+
+    function deleteAction(actionId) {
+        setReport((currentReport) => {
+            const updatedReport = {
+                ...currentReport,
+                actions: currentReport.actions.filter(
+                    (action) => action.id !== actionId
+                ),
+            };
+
+            saveCurrentDailyReport(updatedReport);
+
+            return updatedReport;
+        });
+    }
+
+    function handleAddTask(actionId, taskName) {
+        setReport((currentReport) => {
+            const updatedReport = addTaskToAction(
+                currentReport,
+                actionId,
+                taskName
+            );
 
             saveCurrentDailyReport(updatedReport);
 
@@ -92,20 +147,6 @@ function Today() {
         });
     }
 
-    function handleAddTask(actionId, taskName) {
-        setReport((currentReport) => {
-            const updatedReport = addTaskToAction(
-                currentReport,
-                actionId,
-                taskName
-            );
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
-    }
-
     function deleteTask(actionId, taskId) {
         setReport((currentReport) => {
             const updatedReport = {
@@ -140,6 +181,38 @@ function Today() {
                 {report.date}
             </p>
 
+            <div className="mb-6">
+                <select
+                    className="select select-bordered"
+                    defaultValue=""
+                    onChange={(event) => {
+                        const action = actions.find(
+                            (action) => action.id === event.target.value
+                        );
+
+                        if (!action) {
+                            return;
+                        }
+
+                        addAction(action);
+                        event.target.value = "";
+                    }}
+                >
+                    <option value="" disabled>
+                        Add Action
+                    </option>
+
+                    {actions.map((action) => (
+                        <option
+                            key={action.id}
+                            value={action.id}
+                        >
+                            {action.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             {report.actions.map((action) => (
                 <div
                     key={action.id}
@@ -158,7 +231,7 @@ function Today() {
                             )}
                         </div>
 
-                        <div>
+                        <div className="space-x-4">
                             <button
                                 className="btn btn-sm"
                                 onClick={() => toggleAction(action.id)}
@@ -168,9 +241,16 @@ function Today() {
                                     : "Complete"}
                             </button>
 
-                            <span className="ml-2">
+                            <span>
                                 {action.status}
                             </span>
+
+                            <button
+                                className="btn btn-sm btn-error"
+                                onClick={() => deleteAction(action.id)}
+                            >
+                                Delete
+                            </button>
                         </div>
                     </div>
 
