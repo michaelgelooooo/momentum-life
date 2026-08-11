@@ -1,7 +1,7 @@
-import Today from "./components/dashboard/Today";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
-    return <Today />;
+    return <Dashboard />;
 }
 
 export default App;
