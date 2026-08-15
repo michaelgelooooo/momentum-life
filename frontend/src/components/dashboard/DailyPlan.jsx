@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { generateId } from "../../utils/ids";
 import { saveCurrentDailyReport } from "../../storage/dailyReports";
@@ -13,6 +13,37 @@ function DailyPlan({
 
     const [actionTime, setActionTime] =
         useState("");
+
+    const now = new Date();
+    // const currentMinutes =
+    //     now.getHours() * 60 + now.getMinutes();
+
+    // TEMP: Fake current time as 3:00 PM
+    const currentMinutes = 10 * 60;
+
+    const currentActionRef = useRef(null);
+    const actionsContainerRef = useRef(null);
+
+    function handleAddAction(event) {
+        event.preventDefault();
+
+        if (!selectedActionId || !actionTime) {
+            return;
+        }
+
+        const action = actions.find(
+            (action) => action.id === selectedActionId
+        );
+
+        if (!action) {
+            return;
+        }
+
+        addAction(action, actionTime);
+
+        setSelectedActionId("");
+        setActionTime("");
+    }
 
     function addAction(action, time) {
         if (!/^\d{2}:00$/.test(time)) {
@@ -99,226 +130,199 @@ function DailyPlan({
         });
     }
 
-    const startHour = Math.min(
-        ...report.actions.map((action) =>
-            parseInt(action.time.split(":")[0], 10)
-        )
-    );
+    function timeToMinutes(time) {
+        const [hours, minutes] = time.split(":").map(Number);
 
-    const endHour = Math.max(
-        ...report.actions.map((action) =>
-            parseInt(action.time.split(":")[0], 10)
-        )
-    );
+        return hours * 60 + minutes;
+    }
+
+    useEffect(() => {
+        const container = actionsContainerRef.current;
+        const currentAction = currentActionRef.current;
+
+        if (!container || !currentAction) {
+            return;
+        }
+
+        const containerTop = container.getBoundingClientRect().top;
+        const actionTop = currentAction.getBoundingClientRect().top;
+
+        const offset = 8;
+
+        container.scrollTo({
+            top: container.scrollTop + (actionTop - containerTop) - offset,
+            behavior: "smooth",
+        });
+    }, [currentMinutes]);
 
     return (
-        <section>
-            <h1 className="text-3xl font-bold">
-                Today
-            </h1>
+        <section className="section-wrapper p-8 space-y-4">
+            <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                    <h1 className="font-lobster section-heading">
+                        Today
+                    </h1>
+                    <p>
+                        {new Date().toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                        })}
+                    </p>
+                </div>
 
-            <p className="mt-1 opacity-60">
-                {report.date}
-            </p>
-
-            {/* Add Action */}
-            <form
-                className="mt-6 mb-6 flex gap-2"
-                onSubmit={(event) => {
-                    event.preventDefault();
-
-                    if (
-                        !selectedActionId ||
-                        !actionTime
-                    ) {
-                        return;
-                    }
-
-                    const action = actions.find(
-                        (action) =>
-                            action.id ===
-                            selectedActionId
-                    );
-
-                    if (!action) {
-                        return;
-                    }
-
-                    addAction(
-                        action,
-                        actionTime
-                    );
-
-                    setSelectedActionId("");
-                    setActionTime("");
-                }}
-            >
-                <select
-                    className="select select-bordered"
-                    value={selectedActionId}
-                    onChange={(event) => {
-                        setSelectedActionId(
-                            event.target.value
-                        );
-                    }}
-                >
-                    <option value="" disabled>
-                        Select Action
-                    </option>
-
-                    {actions.map((action) => (
-                        <option
-                            key={action.id}
-                            value={action.id}
+                <div className="dropdown dropdown-end">
+                    <div tabIndex={0} role="button" className="btn btn-wrapper btn-circle btn-xl">
+                        <i className="fas fa-plus font-bold"></i>
+                    </div>
+                    <div tabIndex="-1" className="dropdown-content menu dropdown-wrapper">
+                        <form
+                            className="space-y-2"
+                            onSubmit={handleAddAction}
                         >
-                            {action.name}
-                        </option>
-                    ))}
-                </select>
+                            <h3 className="font-semibold text-lg">ADD ACTION</h3>
+                            <hr className="border" />
+                            <div className="space-y-2">
+                                <select
+                                    className="select input-wrapper"
+                                    value={selectedActionId}
+                                    onChange={(event) =>
+                                        setSelectedActionId(event.target.value)
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        Select Action
+                                    </option>
 
-                <select
-                    className="select select-bordered"
-                    value={actionTime}
-                    onChange={(event) => {
-                        setActionTime(event.target.value);
-                    }}
-                >
-                    <option value="" disabled>
-                        Select Time
-                    </option>
+                                    {actions.map((action) => (
+                                        <option
+                                            key={action.id}
+                                            value={action.id}
+                                        >
+                                            {action.name}
+                                        </option>
+                                    ))}
+                                </select>
 
-                    {Array.from({ length: 24 }, (_, hour) => {
-                        const time = `${String(hour).padStart(2, "0")}:00`;
+                                <select
+                                    className="select input-wrapper"
+                                    value={actionTime}
+                                    onChange={(event) =>
+                                        setActionTime(event.target.value)
+                                    }
+                                >
+                                    <option value="" disabled>
+                                        Select Time
+                                    </option>
 
-                        return (
-                            <option key={time} value={time}>
-                                {time}
-                            </option>
-                        );
-                    })}
-                </select>
+                                    {Array.from({ length: 24 }, (_, hour) => {
+                                        const time = `${String(hour).padStart(2, "0")}:00`;
 
-                <button
-                    type="submit"
-                    className="btn btn-primary"
-                >
-                    Add Action
-                </button>
-            </form>
+                                        return (
+                                            <option key={time} value={time}>
+                                                {time}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
 
-            {/* Timeline */}
-            <div className="mt-8">
+                            <hr className="border" />
+
+                            <button
+                                type="submit"
+                                className="btn btn-wrapper rounded-lg w-full"
+                            >
+                                <i className="fas fa-floppy-disk"></i> SAVE
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <hr className="border rounded" />
+
+            {/* Actions */}
+            <div ref={actionsContainerRef} className="card-wrapper h-[70vh] overflow-y-auto scrollbar-hidden space-y-4">
                 {report.actions.map((action, index) => {
-                    const currentHour = parseInt(
-                        action.time.split(":")[0],
-                        10
-                    );
+                    const actionStart = timeToMinutes(action.time);
 
                     const nextAction = report.actions[index + 1];
 
-                    const nextHour = nextAction
-                        ? parseInt(
-                            nextAction.time.split(":")[0],
-                            10
-                        )
-                        : currentHour + 1;
+                    const actionEnd = nextAction
+                        ? timeToMinutes(nextAction.time)
+                        : Infinity;
 
-                    const duration = nextHour - currentHour;
+                    const isCurrent =
+                        currentMinutes >= actionStart &&
+                        currentMinutes < actionEnd;
+
+                    const isPast = currentMinutes >= actionEnd;
+                    const isAvailable = isCurrent || isPast;
 
                     return (
                         <div
                             key={action.id}
-                            className="grid grid-cols-[60px_1fr]"
+                            ref={isCurrent ? currentActionRef : null}
+                            className="w-full space-y-2"
                         >
-                            {/* Hours */}
-                            <div
-                                className="relative border-r text-right text-sm opacity-60"
-                                style={{
-                                    height: `${duration * 80}px`,
-                                }}
-                            >
-                                {Array.from(
-                                    { length: duration },
-                                    (_, hourIndex) => (
-                                        <div
-                                            key={hourIndex}
-                                            className="absolute right-3"
-                                            style={{
-                                                top: `${hourIndex * 80}px`,
-                                            }}
-                                        >
-                                            {`${String(
-                                                currentHour +
-                                                hourIndex
-                                            ).padStart(2, "0")}:00`}
-                                        </div>
-                                    )
-                                )}
-
-                                {/* Final hour marker */}
-                                {nextAction && (
-                                    <div
-                                        className="absolute right-3"
-                                        style={{
-                                            top: `${duration * 80}px`,
-                                        }}
-                                    >
-                                        {`${String(nextHour).padStart(
-                                            2,
-                                            "0"
-                                        )}:00`}
-                                    </div>
-                                )}
+                            <div className={`${action.status === "completed"
+                                ? "opacity-50"
+                                : ""
+                                } flex items-center gap-2`}>
+                                <hr className="border-2 border-dashed w-16" />
+                                <div className="">
+                                    <span className={`${isCurrent ? "badge-wrapper" : ""} font-bold`}>
+                                        {action.time}
+                                    </span>
+                                </div>
+                                <hr className="border-2 border-dashed w-full" />
                             </div>
 
-                            {/* Action */}
                             <div
-                                className="px-4 pb-2"
-                                style={{
-                                    minHeight: `${duration * 80}px`,
-                                }}
+                                className={`${isCurrent
+                                    ? "inner-card-wrapper-active"
+                                    : "inner-card-wrapper"
+                                    } ${action.status === "completed"
+                                        ? "inner-card-wrapper-completed"
+                                        : ""
+                                    } w-full flex items-center justify-between gap-2`}
                             >
-                                <div className="h-full rounded-box bg-base-200 p-4">
-                                    <div className="flex items-start justify-between gap-4">
-                                        <h2 className="font-semibold">
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        className="checkbox checkbox-wrapper checkbox-xl"
+                                        checked={action.status === "completed"}
+                                        disabled={!isAvailable}
+                                        onChange={() => toggleAction(action.id)}
+                                    />
+
+                                    <div>
+                                        <h2
+                                            className={`font-semibold ${action.status === "completed"
+                                                ? "line-through opacity-50"
+                                                : ""
+                                                }`}
+                                        >
                                             {action.name}
                                         </h2>
 
-                                        <div className="flex gap-1">
-                                            <button
-                                                className={`btn btn-xs ${action.status ===
-                                                        "completed"
-                                                        ? "btn-success"
-                                                        : "btn-outline"
-                                                    }`}
-                                                onClick={() =>
-                                                    toggleAction(
-                                                        action.id
-                                                    )
-                                                }
-                                            >
-                                                {action.status ===
-                                                    "completed"
-                                                    ? "✓"
-                                                    : "○"}
-                                            </button>
-
-                                            <button
-                                                className="btn btn-xs btn-ghost"
-                                                onClick={() =>
-                                                    deleteAction(
-                                                        action.id
-                                                    )
-                                                }
-                                            >
-                                                ✕
-                                            </button>
-                                        </div>
+                                        <p
+                                            className={`text-xs ${action.status === "completed"
+                                                ? "line-through opacity-50"
+                                                : ""
+                                                }`}
+                                        >
+                                            {action.description}
+                                        </p>
                                     </div>
                                 </div>
+
+                                <button className="btn btn-wrapper btn-square">
+                                    <i className="fas fa-info"></i>
+                                </button>
                             </div>
-                        </div>
-                    );
+                        </div>);
                 })}
             </div>
         </section>

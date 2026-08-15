@@ -1,7 +1,10 @@
 function Stats({ report }) {
     return (
-        <section className="mb-6">
-            <div className="stats stats-vertical w-full shadow sm:stats-horizontal">
+        <section className="section-wrapper space-y-4 p-8">
+            <h2 className="font-lobster section-heading">
+                Stats
+            </h2>
+            <div className="stats stats-vertical card-wrapper w-full sm:stats-horizontal">
 
                 <div className="stat">
                     <div className="stat-figure text-secondary">

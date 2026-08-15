@@ -36,31 +36,29 @@ function Dashboard() {
     }
 
     return (
-        <main className="min-h-screen p-6">
-            <div className="mx-auto grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
-                {/* Daily Plan */}
-                <section className="lg:col-span-1">
-                    <DailyPlan
-                        report={report}
-                        setReport={setReport}
-                        actions={actions}
-                    />
-                </section>
+            {/* Daily Plan */}
+            <section className="lg:col-span-1">
+                <DailyPlan
+                    report={report}
+                    setReport={setReport}
+                    actions={actions}
+                />
+            </section>
 
-                {/* Main Content */}
-                <section className="lg:col-span-2">
-                    <Stats
-                        report={report}
-                    />
-                    <ToDo
-                        report={report}
-                        setReport={setReport}
-                    />
-                </section>
+            {/* Main Content */}
+            <section className="lg:col-span-2 space-y-4">
+                <Stats
+                    report={report}
+                />
+                <ToDo
+                    report={report}
+                    setReport={setReport}
+                />
+            </section>
 
-            </div>
-        </main>
+        </div>
     );
 }
 

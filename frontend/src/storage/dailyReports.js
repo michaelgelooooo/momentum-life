@@ -22,9 +22,17 @@ export function createDailyReport(plan, actions) {
                     id: generateId("day-action"),
                     actionId: action.id,
                     name: action.name,
+                    description: action.description,
                     time: planAction.time,
                     status: "pending",
-                    tasks: [],
+
+                    tasks: (planAction.tasks || []).map(
+                        (planTask) => ({
+                            id: generateId("task"),
+                            name: planTask.name,
+                            status: "pending",
+                        })
+                    ),
                 };
             })
             .filter(Boolean),

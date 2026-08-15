@@ -4,6 +4,23 @@ import {
 } from "../../storage/dailyReports";
 
 function ToDo({ report, setReport }) {
+    function handleSubmitTask(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+
+        const actionId = formData.get("action");
+        const taskName = formData.get("task")?.trim();
+
+        if (!actionId || !taskName) {
+            return;
+        }
+
+        handleAddTask(actionId, taskName);
+
+        event.currentTarget.reset();
+    }
+
     function handleAddTask(actionId, taskName) {
         setReport((currentReport) => {
             const updatedReport = addTaskToAction(
@@ -81,72 +98,65 @@ function ToDo({ report, setReport }) {
     }
 
     return (
-        <section>
-            <h2 className="mb-6 text-2xl font-bold">
-                To-Do
-            </h2>
+        <section className="section-wrapper p-8 space-y-4">
+            <div className="flex items-center justify-between">
+                <h2 className="font-lobster section-heading">
+                    To-Do
+                </h2>
 
-            {/* Add Task */}
-            <form
-                className="mb-6 flex gap-2"
-                onSubmit={(event) => {
-                    event.preventDefault();
-
-                    const formData = new FormData(
-                        event.currentTarget
-                    );
-
-                    const actionId =
-                        formData.get("action");
-
-                    const taskName =
-                        formData.get("task")?.trim();
-
-                    if (!actionId || !taskName) {
-                        return;
-                    }
-
-                    handleAddTask(
-                        actionId,
-                        taskName
-                    );
-
-                    event.currentTarget.reset();
-                }}
-            >
-                <select
-                    name="action"
-                    className="select select-bordered"
-                    defaultValue=""
-                >
-                    <option value="" disabled>
-                        Select Action
-                    </option>
-
-                    {report.actions.map((action) => (
-                        <option
-                            key={action.id}
-                            value={action.id}
+                <div className="dropdown dropdown-end">
+                    <div tabIndex={0} role="button" className="btn btn-wrapper btn-circle btn-xl">
+                        <i className="fas fa-plus font-bold"></i>
+                    </div>
+                    <div tabIndex="-1" className="dropdown-content menu dropdown-wrapper">
+                        <form
+                            className="space-y-2"
+                            onSubmit={handleSubmitTask}
                         >
-                            {action.name}
-                        </option>
-                    ))}
-                </select>
+                            <h3 className="font-semibold text-lg">ADD ACTION</h3>
+                            <hr className="border" />
+                            <div className="space-y-2">
+                                <select
+                                    name="action"
+                                    className="select input-wrapper"
+                                    defaultValue=""
+                                >
+                                    <option value="" disabled>
+                                        Select Action
+                                    </option>
 
-                <input
-                    name="task"
-                    type="text"
-                    className="input input-bordered flex-1"
-                    placeholder="Task name..."
-                />
+                                    {report.actions.map((action) => (
+                                        <option
+                                            key={action.id}
+                                            value={action.id}
+                                        >
+                                            {action.time} — {action.name}
+                                        </option>
+                                    ))}
+                                </select>
 
-                <button
-                    type="submit"
-                    className="btn btn-primary"
-                >
-                    Add Task
-                </button>
-            </form>
+                                <input
+                                    name="task"
+                                    type="text"
+                                    className="input input-wrapper"
+                                    placeholder="Enter Task Name"
+                                />
+                            </div>
+
+                            <hr className="border" />
+
+                            <button
+                                type="submit"
+                                className="btn btn-wrapper rounded-lg w-full"
+                            >
+                                <i className="fas fa-floppy-disk"></i> SAVE
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <hr className="border rounded" />
 
             {/* Task List */}
             <div className="space-y-2">
@@ -157,11 +167,10 @@ function ToDo({ report, setReport }) {
                             className="flex items-center gap-3"
                         >
                             <button
-                                className={`btn btn-xs ${
-                                    task.status === "completed"
-                                        ? "btn-success"
-                                        : "btn-outline"
-                                }`}
+                                className={`btn btn-xs ${task.status === "completed"
+                                    ? "btn-success"
+                                    : "btn-outline"
+                                    }`}
                                 onClick={() =>
                                     toggleTask(
                                         action.id,
@@ -175,11 +184,10 @@ function ToDo({ report, setReport }) {
                             </button>
 
                             <span
-                                className={`flex-1 ${
-                                    task.status === "completed"
-                                        ? "line-through opacity-50"
-                                        : ""
-                                }`}
+                                className={`flex-1 ${task.status === "completed"
+                                    ? "line-through opacity-50"
+                                    : ""
+                                    }`}
                             >
                                 {task.name}
                             </span>

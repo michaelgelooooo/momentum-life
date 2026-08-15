@@ -1,5 +1,83 @@
 @import "tailwindcss";
 
 @plugin "daisyui" {
-    themes: winter --default, dracula --prefersdark;
+    themes: light;
+}
+
+.font-fascinate {
+    font-family: "Fascinate Inline", system-ui;
+    font-weight: 400;
+    font-style: normal;
+
+    -webkit-text-stroke: 0.5px black;
+}
+
+.font-lobster {
+    font-family: "Lobster", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.scrollbar-hidden {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+}
+
+.navbar-brand {
+    @apply text-4xl text-rose-50;
+    @apply transition-all duration-100 ease-out hover:text-rose-400 hover:scale-102;
+
+    text-shadow: 2px 2px 0 black;
+}
+
+.section-heading {
+    @apply text-6xl text-rose-50;
+    text-shadow: 2px 2px 0 black;
+}
+
+.section-wrapper {
+    @apply bg-rose-200 border-2 border-black rounded-2xl;
+
+    box-shadow: 4px 4px 0 black;
+}
+
+.dropdown-wrapper {
+    @apply bg-rose-200 border-2 border-black rounded-xl z-1 w-80 p-4 mt-2;
+    box-shadow: 4px 4px 0 black;
+}
+
+.card-wrapper {
+    @apply bg-rose-300 border-2 border-black rounded-xl p-4;
+}
+
+.inner-card-wrapper {
+    @apply bg-rose-100 border-2 border-black rounded-xl p-4;
+}
+
+.inner-card-wrapper-active {
+    @apply bg-rose-400 border-2 border-black rounded-xl p-4;
+}
+
+.inner-card-wrapper-completed {
+    @apply bg-rose-200 border-2 border-dashed border-black rounded-xl p-4;
+}
+
+.input-wrapper {
+    @apply bg-rose-300 border-2 w-full border-black rounded-lg;
+}
+
+.btn-wrapper {
+    @apply bg-rose-500 border-2 border-black shadow-none;
+}
+
+.checkbox-wrapper {
+    @apply bg-transparent border-2 border-black rounded checked:bg-rose-500;
+}
+
+.badge-wrapper {
+    @apply badge badge-lg bg-rose-500 border-2 border-black rounded-full;
 }

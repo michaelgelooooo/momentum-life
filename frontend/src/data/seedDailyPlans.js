@@ -6,71 +6,168 @@ export const defaultDailyPlans = [
         actions: [
             {
                 actionId: "action-001",
-                time: "07:00",
+                time: "06:00",
+                tasks: [
+                    { name: "Check socials" },
+                    { name: "Review today's schedule" },
+                    { name: "Update task list" },
+                ],
             },
             {
                 actionId: "action-002",
-                time: "08:00",
+                time: "07:00",
             },
             {
                 actionId: "action-003",
-                time: "09:00",
+                time: "08:00",
+                tasks: [
+                    { name: "30-60 min walk/job on treadmill" },
+                ],
             },
             {
                 actionId: "action-004",
-                time: "18:00",
+                time: "09:00",
             },
             {
                 actionId: "action-005",
-                time: "20:00",
+                time: "10:00",
+            },
+            {
+                actionId: "action-006",
+                time: "12:00",
+            },
+            {
+                actionId: "action-007",
+                time: "13:00",
+            },
+            {
+                actionId: "action-008",
+                time: "18:00",
+            },
+            {
+                actionId: "action-007",
+                time: "19:00",
+            },
+            {
+                actionId: "action-004",
+                time: "21:00",
+            },
+            {
+                actionId: "action-012",
+                time: "22:00",
+                tasks: [
+                    { name: "Check socials" },
+                    { name: "Review the day" },
+                ],
             },
         ],
     },
 
     {
         id: "plan-002",
-        name: "Weekend",
-        description: "A flexible weekend structure.",
+        name: "Solo Free Day",
+        description: "A flexible free day structure.",
         actions: [
             {
                 actionId: "action-001",
-                time: "08:00",
+                time: "06:00",
+                tasks: [
+                    { name: "Check socials" },
+                    { name: "Review today's schedule" },
+                    { name: "Update task list" },
+                ],
             },
             {
                 actionId: "action-002",
-                time: "09:00",
+                time: "07:00",
             },
             {
                 actionId: "action-004",
-                time: "14:00",
+                time: "08:00",
+            },
+            {
+                actionId: "action-005",
+                time: "09:00",
+            },
+            {
+                actionId: "action-006",
+                time: "12:00",
+            },
+            {
+                actionId: "action-005",
+                time: "13:00",
+            },
+            {
+                actionId: "action-008",
+                time: "18:00",
             },
             {
                 actionId: "action-005",
                 time: "19:00",
             },
             {
-                actionId: "action-007",
-                time: "21:00",
+                actionId: "action-004",
+                time: "22:00",
+            },
+            {
+                actionId: "action-012",
+                time: "23:00",
+                tasks: [
+                    { name: "Check socials" },
+                    { name: "Review the day" },
+                ],
             },
         ],
     },
 
     {
         id: "plan-003",
-        name: "Light Day",
-        description: "A simpler day when I don't want a full routine.",
+        name: "Errand Day",
+        description: "Go outside to run some errands.",
         actions: [
             {
                 actionId: "action-001",
-                time: "08:00",
+                time: "05:00",
             },
             {
                 actionId: "action-002",
-                time: "10:00",
+                time: "06:00",
+            },
+            {
+                actionId: "action-004",
+                time: "07:00",
+            },
+            {
+                actionId: "action-009",
+                time: "08:00",
+            },
+            {
+                actionId: "action-006",
+                time: "12:00",
+            },
+            {
+                actionId: "action-009",
+                time: "13:00",
+            },
+            {
+                actionId: "action-008",
+                time: "18:00",
             },
             {
                 actionId: "action-005",
                 time: "19:00",
+            },
+            {
+                actionId: "action-004",
+                time: "21:00",
+            },
+            {
+                actionId: "action-012",
+                time: "22:00",
+                tasks: [
+                    { name: "Check socials" },
+                    { name: "Review the day" },
+                ],
             },
         ],
     },
