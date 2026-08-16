@@ -98,14 +98,14 @@ function ToDo({ report, setReport }) {
     }
 
     return (
-        <section className="section-wrapper p-8 space-y-4">
+        <section className="section-wrapper p-4 lg:p-8 space-y-4">
             <div className="flex items-center justify-between">
                 <h2 className="font-lobster section-heading">
                     To-Do
                 </h2>
 
                 <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-wrapper btn-circle btn-xl">
+                    <div tabIndex={0} role="button" className="btn btn-wrapper btn-circle btn-lg lg:btn-xl">
                         <i className="fas fa-plus font-bold"></i>
                     </div>
                     <div tabIndex="-1" className="dropdown-content menu dropdown-wrapper">
@@ -156,60 +156,57 @@ function ToDo({ report, setReport }) {
                 </div>
             </div>
 
-            <hr className="border rounded" />
-
-            {/* Task List */}
-            <div className="space-y-2">
-                {report.actions.flatMap((action) =>
-                    action.tasks.map((task) => (
-                        <div
-                            key={task.id}
-                            className="flex items-center gap-3"
-                        >
-                            <button
-                                className={`btn btn-xs ${task.status === "completed"
-                                    ? "btn-success"
-                                    : "btn-outline"
-                                    }`}
-                                onClick={() =>
-                                    toggleTask(
-                                        action.id,
-                                        task.id
-                                    )
-                                }
-                            >
-                                {task.status === "completed"
-                                    ? "✓"
-                                    : "○"}
-                            </button>
-
-                            <span
-                                className={`flex-1 ${task.status === "completed"
-                                    ? "line-through opacity-50"
+            <div className="card-wrapper h-106 overflow-y-auto scrollbar-hidden" id="ToDo">
+                <div className="space-y-2">
+                    {report.actions.flatMap((action) =>
+                        action.tasks.map((task) => (
+                            <div
+                                key={task.id}
+                                className={`inner-card-wrapper ${task.status === "completed"
+                                    ? "inner-card-wrapper-completed"
                                     : ""
-                                    }`}
+                                    }  p-2 w-full space-y-1`}
                             >
-                                {task.name}
-                            </span>
 
-                            <span className="badge badge-ghost">
-                                {action.name}
-                            </span>
+                                <span className="badge-wrapper-action gap-1">
+                                    <span className="font-bold">
+                                        {action.time}
+                                    </span>
 
-                            <button
-                                className="btn btn-xs btn-ghost"
-                                onClick={() =>
-                                    deleteTask(
-                                        action.id,
-                                        task.id
-                                    )
-                                }
-                            >
-                                ✕
-                            </button>
-                        </div>
-                    ))
-                )}
+                                    <span className="opacity-60">•</span>
+
+                                    <span>
+                                        {action.name}
+                                    </span>
+                                </span>
+                                <div className="flex items-center justify-between gap-2">
+                                    <div className="flex items-center gap-2 min-w-0">
+                                        <input
+                                            type="checkbox"
+                                            className="checkbox checkbox-wrapper checkbox-sm"
+                                            checked={task.status === "completed"}
+                                            onChange={() => toggleTask(action.id, task.id)}
+                                        />
+
+                                        <span className={`font-semibold text-xs lg:text-sm ${task.status === "completed"
+                                            ? "line-through opacity-50"
+                                            : ""
+                                            }`}>
+                                            {task.name}
+                                        </span>
+                                    </div>
+
+                                    <button
+                                        className="btn btn-wrapper btn-square btn-xs"
+                                        onClick={() => deleteTask(action.id, task.id)}
+                                    >
+                                        <i className="fas fa-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
             </div>
         </section>
     );

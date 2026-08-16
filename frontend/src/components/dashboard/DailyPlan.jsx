@@ -15,11 +15,9 @@ function DailyPlan({
         useState("");
 
     const now = new Date();
-    // const currentMinutes =
-    //     now.getHours() * 60 + now.getMinutes();
 
-    // TEMP: Fake current time as 3:00 PM
-    const currentMinutes = 10 * 60;
+    const currentMinutes =
+        now.getHours() * 60 + now.getMinutes();
 
     const currentActionRef = useRef(null);
     const actionsContainerRef = useRef(null);
@@ -156,23 +154,14 @@ function DailyPlan({
     }, [currentMinutes]);
 
     return (
-        <section className="section-wrapper p-8 space-y-4">
+        <section className="section-wrapper p-4 lg:p-8 space-y-4 scroll-mt-24" id="DailyPlan">
             <div className="flex items-center justify-between">
-                <div className="space-y-2">
-                    <h1 className="font-lobster section-heading">
-                        Today
-                    </h1>
-                    <p>
-                        {new Date().toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                        })}
-                    </p>
-                </div>
+                <h1 className="font-lobster section-heading">
+                    Daily Plan
+                </h1>
 
                 <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="btn btn-wrapper btn-circle btn-xl">
+                    <div tabIndex={0} role="button" className="btn btn-wrapper btn-circle btn-lg lg:btn-xl">
                         <i className="fas fa-plus font-bold"></i>
                     </div>
                     <div tabIndex="-1" className="dropdown-content menu dropdown-wrapper">
@@ -240,10 +229,8 @@ function DailyPlan({
                 </div>
             </div>
 
-            <hr className="border rounded" />
-
             {/* Actions */}
-            <div ref={actionsContainerRef} className="card-wrapper h-[70vh] overflow-y-auto scrollbar-hidden space-y-4">
+            <div ref={actionsContainerRef} className="card-wrapper h-160 lg:h-[73vh] overflow-y-auto scrollbar-hidden space-y-2 lg:space-y-4">
                 {report.actions.map((action, index) => {
                     const actionStart = timeToMinutes(action.time);
 
@@ -264,19 +251,19 @@ function DailyPlan({
                         <div
                             key={action.id}
                             ref={isCurrent ? currentActionRef : null}
-                            className="w-full space-y-2"
+                            className="w-full"
                         >
                             <div className={`${action.status === "completed"
                                 ? "opacity-50"
                                 : ""
-                                } flex items-center gap-2`}>
-                                <hr className="border-2 border-dashed w-16" />
+                                } flex items-center gap-1`}>
+                                <hr className="border border-dashed w-16" />
                                 <div className="">
-                                    <span className={`${isCurrent ? "badge-wrapper" : ""} font-bold`}>
+                                    <span className={`${isCurrent ? "badge-wrapper-active" : "badge-wrapper"} font-bold`}>
                                         {action.time}
                                     </span>
                                 </div>
-                                <hr className="border-2 border-dashed w-full" />
+                                <hr className="border border-dashed w-full" />
                             </div>
 
                             <div
@@ -286,41 +273,52 @@ function DailyPlan({
                                     } ${action.status === "completed"
                                         ? "inner-card-wrapper-completed"
                                         : ""
-                                    } w-full flex items-center justify-between gap-2`}
+                                    }  p-2 lg:p-4 w-full space-y-1`}
                             >
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        type="checkbox"
-                                        className="checkbox checkbox-wrapper checkbox-xl"
-                                        checked={action.status === "completed"}
-                                        disabled={!isAvailable}
-                                        onChange={() => toggleAction(action.id)}
-                                    />
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            className="checkbox checkbox-wrapper checkbox-lg lg:checkbox-xl"
+                                            checked={action.status === "completed"}
+                                            disabled={!isAvailable}
+                                            onChange={() => toggleAction(action.id)}
+                                        />
 
-                                    <div>
-                                        <h2
-                                            className={`font-semibold ${action.status === "completed"
-                                                ? "line-through opacity-50"
-                                                : ""
-                                                }`}
-                                        >
-                                            {action.name}
-                                        </h2>
-
-                                        <p
-                                            className={`text-xs ${action.status === "completed"
-                                                ? "line-through opacity-50"
-                                                : ""
-                                                }`}
-                                        >
-                                            {action.description}
-                                        </p>
+                                        <div className="flex items-center gap-2">
+                                            <h2
+                                                className={`font-bold ${action.status === "completed"
+                                                    ? "line-through opacity-50"
+                                                    : ""
+                                                    }`}
+                                            >
+                                                {action.name}
+                                            </h2>
+                                            {action.tasks.length > 0 && (
+                                                <>
+                                                    <i className="fas fa-caret-right text-xs"></i>
+                                                    <span className="text-xs opacity-75">
+                                                        {action.tasks.filter(
+                                                            (task) => task.status === "completed"
+                                                        ).length}/{action.tasks.length} tasks
+                                                    </span>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
 
-                                <button className="btn btn-wrapper btn-square">
-                                    <i className="fas fa-info"></i>
-                                </button>
+                                    <button className="btn btn-wrapper btn-square btn-sm">
+                                        <i className="fas fa-info"></i>
+                                    </button>
+                                </div>
+                                <p
+                                    className={`text-xs ${action.status === "completed"
+                                        ? "line-through opacity-50"
+                                        : ""
+                                        }`}
+                                >
+                                    {action.description}
+                                </p>
                             </div>
                         </div>);
                 })}

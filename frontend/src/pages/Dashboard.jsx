@@ -36,10 +36,10 @@ function Dashboard() {
     }
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="flex flex-col gap-4 lg:flex-row">
 
             {/* Daily Plan */}
-            <section className="lg:col-span-1">
+            <section className="order-2 lg:order-1 lg:w-1/3">
                 <DailyPlan
                     report={report}
                     setReport={setReport}
@@ -47,15 +47,20 @@ function Dashboard() {
                 />
             </section>
 
-            {/* Main Content */}
-            <section className="lg:col-span-2 space-y-4">
-                <Stats
-                    report={report}
-                />
-                <ToDo
-                    report={report}
-                    setReport={setReport}
-                />
+            {/* Right column */}
+            <section className="contents lg:order-2 lg:flex lg:w-2/3 lg:flex-col lg:gap-4">
+                <div className="order-1 lg:order-none">
+                    <Stats
+                        report={report}
+                    />
+                </div>
+
+                <div className="order-3 lg:order-none">
+                    <ToDo
+                        report={report}
+                        setReport={setReport}
+                    />
+                </div>
             </section>
 
         </div>

@@ -1,65 +1,71 @@
 function Stats({ report }) {
+    const taskTotal = report.actions.reduce(
+        (total, action) => total + action.tasks.length,
+        0
+    );
+
+    const completedTaskTotal = report.actions.reduce(
+        (total, action) =>
+            total +
+            action.tasks.filter(
+                (task) => task.status === "completed"
+            ).length,
+        0
+    );
+
     return (
-        <section className="section-wrapper space-y-4 p-8">
+        <section className="section-wrapper p-4 lg:p-8 space-y-4" id="Stats">
             <h2 className="font-lobster section-heading">
                 Stats
             </h2>
-            <div className="stats stats-vertical card-wrapper w-full sm:stats-horizontal">
+            <div className="card-wrapper w-full grid grid-cols-3 divide-x-2 divide-black">
+                <div className="stat p-2 lg:p-4 flex flex-col items-center text-center">
+                    <i className="fa-solid fa-diagram-next text-rose-500 text-lg lg:text-2xl mb-1"></i>
 
-                <div className="stat">
-                    <div className="stat-figure text-secondary">
-                        <i className="fa-solid fa-list-check text-2xl"></i>
-                    </div>
-
-                    <div className="stat-title">
+                    <div className="stat-title font-bold">
                         Actions
                     </div>
 
-                    <div className="stat-value">
-                        6
+                    <div className="stat-value text-3xl lg:text-4xl">
+                        {report.actions.length}
                     </div>
 
-                    <div className="stat-desc">
-                        Planned today
+                    <div className="stat-desc font-semibold">
+                        Planned
                     </div>
                 </div>
 
-                <div className="stat">
-                    <div className="stat-figure text-secondary">
-                        <i className="fa-solid fa-list text-2xl"></i>
-                    </div>
+                <div className="stat p-2 lg:p-4 flex flex-col items-center text-center">
+                    <i className="fa-solid fa-list text-rose-500 text-lg lg:text-2xl mb-1"></i>
 
-                    <div className="stat-title">
+                    <div className="stat-title font-bold">
                         Tasks
                     </div>
 
-                    <div className="stat-value">
-                        8
+                    <div className="stat-value text-3xl lg:text-4xl">
+                        {taskTotal}
                     </div>
 
-                    <div className="stat-desc">
-                        Created today
+                    <div className="stat-desc font-semibold">
+                        Created
                     </div>
                 </div>
 
-                <div className="stat">
-                    <div className="stat-figure text-secondary">
-                        <i className="fa-solid fa-circle-check text-2xl"></i>
+                <div className="stat p-2 lg:p-4 flex flex-col items-center text-center">
+                    <i className="fa-solid fa-list-check text-rose-500 text-lg lg:text-2xl mb-1"></i>
+
+                    <div className="stat-title font-bold">
+                        Tasks
                     </div>
 
-                    <div className="stat-title">
+                    <div className="stat-value text-3xl lg:text-4xl">
+                        {completedTaskTotal}
+                    </div>
+
+                    <div className="stat-desc font-semibold">
                         Completed
                     </div>
-
-                    <div className="stat-value">
-                        5
-                    </div>
-
-                    <div className="stat-desc">
-                        Tasks completed
-                    </div>
                 </div>
-
             </div>
         </section>
     );
