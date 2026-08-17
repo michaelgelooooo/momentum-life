@@ -105,3 +105,8 @@
 .badge-wrapper-action {
     @apply badge badge-xs lg:badge-sm bg-rose-400 border-2 border-black rounded-full p-1;
 }
+
+.drawer-heading {
+    @apply text-2xl lg:text-4xl text-rose-50;
+    text-shadow: 2px 2px 0 black;
+}

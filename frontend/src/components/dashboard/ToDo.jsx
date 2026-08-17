@@ -10,16 +10,18 @@ function ToDo({ report, setReport }) {
                 </h2>
 
                 <AddTask
-                report={report}
-                setReport={setReport}
-            />
+                    report={report}
+                    setReport={setReport}
+                />
             </div>
 
-            <RenderTasks
-                report={report}
-                setReport={setReport}
-            />
-        </section>
+            <div className="card-wrapper h-106 overflow-y-auto scrollbar-hidden" id="ToDo">
+                <RenderTasks
+                    report={report}
+                    setReport={setReport}
+                />
+            </div>
+        </section >
     );
 }
 

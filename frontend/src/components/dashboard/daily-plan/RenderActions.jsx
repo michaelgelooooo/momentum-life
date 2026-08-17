@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import ActionDetails from "./ActionDetails";
 import { saveCurrentDailyReport } from "../../../storage/dailyReports";
 
 function RenderActions({ report, setReport }) {
@@ -29,23 +30,6 @@ function RenderActions({ report, setReport }) {
                                     : "completed",
                         };
                     }
-                ),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
-    }
-
-    function deleteAction(actionId) {
-        setReport((currentReport) => {
-            const updatedReport = {
-                ...currentReport,
-
-                actions: currentReport.actions.filter(
-                    (action) =>
-                        action.id !== actionId
                 ),
             };
 
@@ -157,6 +141,12 @@ function RenderActions({ report, setReport }) {
                                         )}
                                     </div>
                                 </div>
+
+                                <ActionDetails
+                                    action={action}
+                                    report={report}
+                                    setReport={setReport}
+                                />
                             </div>
                             <p
                                 className={`text-xs ${action.status === "completed"

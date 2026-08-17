@@ -15,6 +15,7 @@ function DailyPlan({
 
                 <AddAction
                     actions={actions}
+                    report={report}
                     setReport={setReport}
                 />
             </div>
