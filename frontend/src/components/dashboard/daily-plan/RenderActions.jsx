@@ -65,100 +65,149 @@ function RenderActions({ report, setReport }) {
     }, [currentMinutes]);
 
     return (
-        <div ref={actionsContainerRef} className="card-wrapper h-160 lg:h-[73vh] overflow-y-auto scrollbar-hidden space-y-2 lg:space-y-4">
-            {report.actions.map((action, index) => {
-                const actionStart = timeToMinutes(action.time);
+        <div
+            ref={actionsContainerRef}
+            className="card-wrapper h-160 lg:h-[73vh] overflow-y-auto scrollbar-hidden space-y-2 lg:space-y-4"
+        >
+            {report.actions.length > 0 ? (
+                report.actions.map((action, index) => {
+                    const actionStart = timeToMinutes(action.time);
 
-                const nextAction = report.actions[index + 1];
+                    const nextAction = report.actions[index + 1];
 
-                const actionEnd = nextAction
-                    ? timeToMinutes(nextAction.time)
-                    : Infinity;
+                    const actionEnd = nextAction
+                        ? timeToMinutes(nextAction.time)
+                        : Infinity;
 
-                const isCurrent =
-                    currentMinutes >= actionStart &&
-                    currentMinutes < actionEnd;
+                    const isCurrent =
+                        currentMinutes >= actionStart &&
+                        currentMinutes < actionEnd;
 
-                const isPast = currentMinutes >= actionEnd;
-                const isAvailable = isCurrent || isPast;
+                    const isPast =
+                        currentMinutes >= actionEnd;
 
-                return (
-                    <div
-                        key={action.id}
-                        ref={isCurrent ? currentActionRef : null}
-                        className="w-full"
-                    >
-                        <div className={`${action.status === "completed"
-                            ? "opacity-50"
-                            : ""
-                            } flex items-center gap-1`}>
-                            <hr className="border border-dashed w-16" />
-                            <div className="">
-                                <span className={`${isCurrent ? "badge-wrapper-active" : "badge-wrapper"} font-bold`}>
-                                    {action.time}
-                                </span>
-                            </div>
-                            <hr className="border border-dashed w-full" />
-                        </div>
+                    const isAvailable =
+                        isCurrent || isPast;
 
+                    return (
                         <div
-                            className={`${isCurrent
-                                ? "inner-card-wrapper-active"
-                                : "inner-card-wrapper"
-                                } ${action.status === "completed"
-                                    ? "inner-card-wrapper-completed"
-                                    : ""
-                                }  p-2 lg:p-4 w-full space-y-1`}
+                            key={action.id}
+                            ref={
+                                isCurrent
+                                    ? currentActionRef
+                                    : null
+                            }
+                            className="w-full"
                         >
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        type="checkbox"
-                                        className="checkbox checkbox-wrapper checkbox-lg lg:checkbox-xl"
-                                        checked={action.status === "completed"}
-                                        disabled={!isAvailable}
-                                        onChange={() => toggleAction(action.id)}
-                                    />
+                            <div
+                                className={`${action.status === "completed"
+                                    ? "opacity-50"
+                                    : ""
+                                    } flex items-center gap-1`}
+                            >
+                                <hr className="border border-dashed w-16" />
 
-                                    <div className="flex items-center gap-2">
-                                        <h2
-                                            className={`font-bold ${action.status === "completed"
-                                                ? "line-through opacity-50"
-                                                : ""
-                                                }`}
-                                        >
-                                            {action.name}
-                                        </h2>
-                                        {action.tasks.length > 0 && (
-                                            <>
-                                                <i className="fas fa-caret-right text-xs"></i>
-                                                <span className="text-xs opacity-75">
-                                                    {action.tasks.filter(
-                                                        (task) => task.status === "completed"
-                                                    ).length}/{action.tasks.length} tasks
-                                                </span>
-                                            </>
-                                        )}
-                                    </div>
+                                <div>
+                                    <span
+                                        className={`${isCurrent
+                                            ? "badge-wrapper-active"
+                                            : "badge-wrapper"
+                                            } font-bold`}
+                                    >
+                                        {action.time}
+                                    </span>
                                 </div>
 
-                                <ActionDetails
-                                    action={action}
-                                    report={report}
-                                    setReport={setReport}
-                                />
+                                <hr className="border border-dashed w-full" />
                             </div>
-                            <p
-                                className={`text-xs ${action.status === "completed"
-                                    ? "line-through opacity-50"
-                                    : ""
-                                    }`}
+
+                            <div
+                                className={`${isCurrent
+                                    ? "inner-card-wrapper-active"
+                                    : "inner-card-wrapper"
+                                    } ${action.status === "completed"
+                                        ? "inner-card-wrapper-completed"
+                                        : ""
+                                    } p-2 lg:p-4 w-full space-y-1`}
                             >
-                                {action.description}
-                            </p>
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="checkbox"
+                                            className="checkbox checkbox-wrapper checkbox-lg lg:checkbox-xl"
+                                            checked={
+                                                action.status === "completed"
+                                            }
+                                            disabled={!isAvailable}
+                                            onChange={() =>
+                                                toggleAction(action.id)
+                                            }
+                                        />
+
+                                        <div className="flex items-center gap-2">
+                                            <h2
+                                                className={`font-bold ${action.status === "completed"
+                                                    ? "line-through opacity-50"
+                                                    : ""
+                                                    }`}
+                                            >
+                                                {action.name}
+                                            </h2>
+
+                                            {action.tasks.length > 0 && (
+                                                <>
+                                                    <i className="fas fa-caret-right text-xs"></i>
+
+                                                    <span className="text-xs opacity-75">
+                                                        {
+                                                            action.tasks.filter(
+                                                                (task) =>
+                                                                    task.status ===
+                                                                    "completed"
+                                                            ).length
+                                                        }
+                                                        /
+                                                        {action.tasks.length} tasks
+                                                    </span>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <ActionDetails
+                                        action={action}
+                                        report={report}
+                                        setReport={setReport}
+                                    />
+                                </div>
+
+                                <p
+                                    className={`text-xs ${action.status === "completed"
+                                        ? "line-through opacity-50"
+                                        : ""
+                                        }`}
+                                >
+                                    {action.description}
+                                </p>
+                            </div>
                         </div>
-                    </div>);
-            })}
+                    );
+                })
+            ) : (
+                <div className="h-full flex items-center justify-center text-center opacity-75">
+                    <div>
+                        <i className="fas fa-diagram-next text-2xl mb-2"></i>
+
+                        <p className="font-semibold">
+                            No actions yet
+                        </p>
+
+                        <p className="text-xs">
+                            Add an action to build your daily plan.
+                        </p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

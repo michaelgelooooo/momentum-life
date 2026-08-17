@@ -92,7 +92,7 @@ function RenderTasks({ report, setReport, actionId }) {
                                             {action.time}
                                         </span>
 
-                                        <span className="opacity-60">•</span>
+                                        <span className="opacity-75">•</span>
 
                                         <span>
                                             {action.name}
@@ -135,9 +135,9 @@ function RenderTasks({ report, setReport, actionId }) {
                     )
                 }</div>
             ) : (
-                <div className="h-full flex items-center justify-center text-center opacity-60">
+                <div className="h-full flex items-center justify-center text-center opacity-75">
                     <div>
-                        <i className="fas fa-list-check text-2xl mb-2"></i>
+                        <i className="fas fa-list text-2xl mb-2"></i>
 
                         <p className="font-semibold">
                             {actionId

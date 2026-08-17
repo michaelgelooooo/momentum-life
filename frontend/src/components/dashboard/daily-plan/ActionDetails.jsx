@@ -136,7 +136,7 @@ function ActionDetails({
                                     DESCRIPTION
                                 </span>
 
-                                <p className="text-sm leading-relaxed opacity-80">
+                                <p className="text-sm leading-relaxed opacity-75">
                                     {action.description}
                                 </p>
                             </div>
@@ -150,7 +150,7 @@ function ActionDetails({
                                         SCHEDULED TIME
                                     </span>
 
-                                    <i className="fas fa-clock text-sm opacity-60"></i>
+                                    <i className="fas fa-clock text-sm opacity-75"></i>
                                 </div>
 
                                 <select
