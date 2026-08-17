@@ -1,0 +1,176 @@
+import { useEffect, useRef } from "react";
+import { saveCurrentDailyReport } from "../../../storage/dailyReports";
+
+function RenderActions({ report, setReport }) {
+    const now = new Date();
+    const currentMinutes =
+        now.getHours() * 60 + now.getMinutes();
+
+    const currentActionRef = useRef(null);
+    const actionsContainerRef = useRef(null);
+
+    function toggleAction(actionId) {
+        setReport((currentReport) => {
+            const updatedReport = {
+                ...currentReport,
+
+                actions: currentReport.actions.map(
+                    (action) => {
+                        if (action.id !== actionId) {
+                            return action;
+                        }
+
+                        return {
+                            ...action,
+
+                            status:
+                                action.status === "completed"
+                                    ? "pending"
+                                    : "completed",
+                        };
+                    }
+                ),
+            };
+
+            saveCurrentDailyReport(updatedReport);
+
+            return updatedReport;
+        });
+    }
+
+    function deleteAction(actionId) {
+        setReport((currentReport) => {
+            const updatedReport = {
+                ...currentReport,
+
+                actions: currentReport.actions.filter(
+                    (action) =>
+                        action.id !== actionId
+                ),
+            };
+
+            saveCurrentDailyReport(updatedReport);
+
+            return updatedReport;
+        });
+    }
+
+    function timeToMinutes(time) {
+        const [hours, minutes] = time.split(":").map(Number);
+
+        return hours * 60 + minutes;
+    }
+
+    useEffect(() => {
+        const container = actionsContainerRef.current;
+        const currentAction = currentActionRef.current;
+
+        if (!container || !currentAction) {
+            return;
+        }
+
+        const containerTop = container.getBoundingClientRect().top;
+        const actionTop = currentAction.getBoundingClientRect().top;
+
+        const offset = 8;
+
+        container.scrollTo({
+            top: container.scrollTop + (actionTop - containerTop) - offset,
+            behavior: "smooth",
+        });
+    }, [currentMinutes]);
+
+    return (
+        <div ref={actionsContainerRef} className="card-wrapper h-160 lg:h-[73vh] overflow-y-auto scrollbar-hidden space-y-2 lg:space-y-4">
+            {report.actions.map((action, index) => {
+                const actionStart = timeToMinutes(action.time);
+
+                const nextAction = report.actions[index + 1];
+
+                const actionEnd = nextAction
+                    ? timeToMinutes(nextAction.time)
+                    : Infinity;
+
+                const isCurrent =
+                    currentMinutes >= actionStart &&
+                    currentMinutes < actionEnd;
+
+                const isPast = currentMinutes >= actionEnd;
+                const isAvailable = isCurrent || isPast;
+
+                return (
+                    <div
+                        key={action.id}
+                        ref={isCurrent ? currentActionRef : null}
+                        className="w-full"
+                    >
+                        <div className={`${action.status === "completed"
+                            ? "opacity-50"
+                            : ""
+                            } flex items-center gap-1`}>
+                            <hr className="border border-dashed w-16" />
+                            <div className="">
+                                <span className={`${isCurrent ? "badge-wrapper-active" : "badge-wrapper"} font-bold`}>
+                                    {action.time}
+                                </span>
+                            </div>
+                            <hr className="border border-dashed w-full" />
+                        </div>
+
+                        <div
+                            className={`${isCurrent
+                                ? "inner-card-wrapper-active"
+                                : "inner-card-wrapper"
+                                } ${action.status === "completed"
+                                    ? "inner-card-wrapper-completed"
+                                    : ""
+                                }  p-2 lg:p-4 w-full space-y-1`}
+                        >
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        className="checkbox checkbox-wrapper checkbox-lg lg:checkbox-xl"
+                                        checked={action.status === "completed"}
+                                        disabled={!isAvailable}
+                                        onChange={() => toggleAction(action.id)}
+                                    />
+
+                                    <div className="flex items-center gap-2">
+                                        <h2
+                                            className={`font-bold ${action.status === "completed"
+                                                ? "line-through opacity-50"
+                                                : ""
+                                                }`}
+                                        >
+                                            {action.name}
+                                        </h2>
+                                        {action.tasks.length > 0 && (
+                                            <>
+                                                <i className="fas fa-caret-right text-xs"></i>
+                                                <span className="text-xs opacity-75">
+                                                    {action.tasks.filter(
+                                                        (task) => task.status === "completed"
+                                                    ).length}/{action.tasks.length} tasks
+                                                </span>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <p
+                                className={`text-xs ${action.status === "completed"
+                                    ? "line-through opacity-50"
+                                    : ""
+                                    }`}
+                            >
+                                {action.description}
+                            </p>
+                        </div>
+                    </div>);
+            })}
+        </div>
+    );
+}
+
+export default RenderActions;

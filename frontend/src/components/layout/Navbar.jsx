@@ -12,7 +12,7 @@ function Navbar() {
     }, []);
 
     return (
-        <div className="navbar sticky top-4 z-50 section-wrapper lg:px-4">
+        <div className="navbar sticky top-4 z-10 section-wrapper lg:px-4">
             <div className="navbar-start">
                 <a href="/" className="navbar-brand hidden lg:block">
                     <span className="font-fascinate">MOMENTUM</span>
