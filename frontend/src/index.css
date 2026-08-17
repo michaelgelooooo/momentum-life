@@ -90,6 +90,10 @@
     @apply bg-rose-500 hover:bg-rose-300 border-2 border-black shadow-none;
 }
 
+.btn-wrapper-neutral {
+    @apply bg-mauve-200 hover:bg-rose-300 border-2 border-black shadow-none;
+}
+
 .checkbox-wrapper {
     @apply bg-transparent border-2 border-black rounded checked:bg-rose-500;
 }

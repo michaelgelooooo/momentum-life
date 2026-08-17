@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import AddTask from "../to-do/AddTask";
 import RenderTasks from "../to-do/RenderTasks";
 
@@ -15,6 +17,9 @@ function ActionDetails({
     const usedTimes = report.actions
         .filter((currentAction) => currentAction.id !== action.id)
         .map((currentAction) => currentAction.time);
+
+    const [showDeleteConfirm, setShowDeleteConfirm] =
+        useState(false);
 
     function handleTimeChange(event) {
         const newTime = event.target.value;
@@ -121,7 +126,7 @@ function ActionDetails({
                                 <button
                                     type="button"
                                     className="btn btn-wrapper"
-                                    onClick={deleteAction}
+                                    onClick={() => setShowDeleteConfirm(true)}
                                 >
                                     <i className="fas fa-trash"></i>
                                     DELETE
@@ -199,6 +204,69 @@ function ActionDetails({
                     </div>
                 </div>
             </div>
+
+            {showDeleteConfirm && (
+                <div className="modal modal-open">
+                    <div className="modal-box section-wrapper space-y-2">
+                        <h3 className="font-lobster text-2xl">
+                            Delete Action?
+                        </h3>
+
+                        <hr className="border rounded black" />
+
+                        <p>
+                            Are you sure you want to delete{" "}
+                            <strong>{action.name}</strong>?
+                        </p>
+
+                        {action.tasks.length > 0 ? (
+                            <div className="card-wrapper space-y-1">
+                                <p className="text-sm font-bold">
+                                    The following tasks will also be deleted:
+                                </p>
+
+                                <ul className="list-disc list-inside space-y-1 text-sm opacity-75">
+                                    {action.tasks.map((task) => (
+                                        <li key={task.id}>
+                                            {task.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ) : (
+                            <p className="text-sm opacity-75">
+                                This action has no associated tasks.
+                            </p>
+                        )}
+
+                        <hr className="border rounded black" />
+
+                        <div className="modal-action">
+                            <button
+                                type="button"
+                                className="btn btn-wrapper-neutral"
+                                onClick={() => setShowDeleteConfirm(false)}
+                            >
+                                CANCEL
+                            </button>
+
+                            <button
+                                type="button"
+                                className="btn btn-wrapper"
+                                onClick={deleteAction}
+                            >
+                                <i className="fas fa-trash"></i>
+                                DELETE
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        className="modal-backdrop"
+                        onClick={() => setShowDeleteConfirm(false)}
+                    ></div>
+                </div>
+            )}
         </div>
     );
 }

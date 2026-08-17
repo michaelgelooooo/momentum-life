@@ -1,11 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ActionDetails from "./ActionDetails";
 import { saveCurrentDailyReport } from "../../../storage/dailyReports";
 
 function RenderActions({ report, setReport }) {
-    const now = new Date();
-    const currentMinutes =
-        now.getHours() * 60 + now.getMinutes();
+    const [currentMinutes, setCurrentMinutes] = useState(() => {
+        const now = new Date();
+
+        return now.getHours() * 60 + now.getMinutes();
+    });
 
     const currentActionRef = useRef(null);
     const actionsContainerRef = useRef(null);
@@ -63,6 +65,42 @@ function RenderActions({ report, setReport }) {
             behavior: "smooth",
         });
     }, [currentMinutes]);
+
+    useEffect(() => {
+        function updateCurrentTime() {
+            const now = new Date();
+
+            setCurrentMinutes(
+                now.getHours() * 60 + now.getMinutes()
+            );
+        }
+
+        updateCurrentTime();
+
+        let interval;
+
+        const now = new Date();
+        const millisecondsUntilNextMinute =
+            (60 - now.getSeconds()) * 1000 -
+            now.getMilliseconds();
+
+        const timeout = setTimeout(() => {
+            updateCurrentTime();
+
+            interval = setInterval(
+                updateCurrentTime,
+                60 * 1000
+            );
+        }, millisecondsUntilNextMinute);
+
+        return () => {
+            clearTimeout(timeout);
+
+            if (interval) {
+                clearInterval(interval);
+            }
+        };
+    }, []);
 
     return (
         <div
