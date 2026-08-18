@@ -47,6 +47,22 @@ function RenderActions({ report, setReport }) {
         return hours * 60 + minutes;
     }
 
+    function getCategoryIcon(category) {
+        switch (category) {
+            case "productive":
+                return "fa-arrow-trend-up";
+
+            case "routine":
+                return "fa-arrows-rotate";
+
+            case "leisure":
+                return "fa-mug-hot";
+
+            default:
+                return "fa-circle-question";
+        }
+    }
+
     useEffect(() => {
         const container = actionsContainerRef.current;
         const currentAction = currentActionRef.current;
@@ -183,14 +199,22 @@ function RenderActions({ report, setReport }) {
                                         />
 
                                         <div className="flex items-center gap-2">
-                                            <h2
-                                                className={`font-bold ${action.status === "completed"
-                                                    ? "line-through opacity-50"
-                                                    : ""
-                                                    }`}
+                                            <div
+                                                className="tooltip capitalize"
+                                                data-tip={action.category}
                                             >
-                                                {action.name}
-                                            </h2>
+                                                <h2
+                                                    className={`font-bold ${action.status === "completed"
+                                                        ? "line-through opacity-50"
+                                                        : ""
+                                                        }`}
+                                                >
+                                                    <i
+                                                        className={`fas ${getCategoryIcon(action.category)} text-xs opacity-75 me-2`}
+                                                    ></i>
+                                                    {action.name}
+                                                </h2>
+                                            </div>
 
                                             {action.tasks.length > 0 && (
                                                 <>
@@ -218,7 +242,6 @@ function RenderActions({ report, setReport }) {
                                         setReport={setReport}
                                     />
                                 </div>
-
                                 <p
                                     className={`text-xs ${action.status === "completed"
                                         ? "line-through opacity-50"

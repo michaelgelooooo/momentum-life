@@ -54,6 +54,7 @@ function AddAction({ actions, report, setReport }) {
                 actionId: action.id,
                 name: action.name,
                 description: action.description,
+                category: action.category,
                 time,
                 status: "pending",
                 tasks: [],

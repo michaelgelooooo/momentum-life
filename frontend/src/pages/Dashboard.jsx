@@ -49,13 +49,13 @@ function Dashboard() {
 
             {/* Right column */}
             <section className="contents lg:order-2 lg:flex lg:w-2/3 lg:flex-col lg:gap-4">
-                <div className="order-1 lg:order-none">
+                <div className="order-1 lg:order-0">
                     <Stats
                         report={report}
                     />
                 </div>
 
-                <div className="order-3 lg:order-none">
+                <div className="order-3 lg:order-0">
                     <ToDo
                         report={report}
                         setReport={setReport}

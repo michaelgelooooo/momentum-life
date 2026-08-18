@@ -23,6 +23,7 @@ export function createDailyReport(plan, actions) {
                     actionId: action.id,
                     name: action.name,
                     description: action.description,
+                    category:action.category,
                     time: planAction.time,
                     status: "pending",
 
