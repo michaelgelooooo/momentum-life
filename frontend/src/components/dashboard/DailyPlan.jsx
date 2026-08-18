@@ -7,7 +7,7 @@ function DailyPlan({
     actions,
 }) {
     return (
-        <section className="section-wrapper p-4 lg:p-8 space-y-4 scroll-mt-24" id="DailyPlan">
+        <section className="section-wrapper p-4 lg:p-8 space-y-4 h-[88vh] flex flex-col scroll-mt-24" id="DailyPlan">
             <div className="flex items-center justify-between">
                 <h1 className="font-lobster section-heading">
                     Daily Plan

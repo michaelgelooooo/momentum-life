@@ -39,7 +39,7 @@ function Dashboard() {
 
     return (
         <>
-            <div className="flex flex-col gap-4 lg:flex-row">
+            <div className="flex flex-col gap-4 lg:flex-row mb-20 lg:mb-0">
 
                 {/* Daily Plan */}
                 <section className="order-2 lg:order-1 lg:w-1/3">

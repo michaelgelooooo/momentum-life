@@ -217,7 +217,7 @@ function ActionDetails({
                             />
                         </div>
 
-                        <div className="card-wrapper flex-1 min-h-0 overflow-y-auto scrollbar-hidden">
+                        <div className="card-wrapper flex-1 min-h-0 overflow-y-auto scrollbar-none">
                             <RenderTasks
                                 report={report}
                                 setReport={setReport}

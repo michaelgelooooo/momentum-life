@@ -19,18 +19,13 @@
 }
 
 .font-spline {
-  font-family: "Spline Sans Mono", monospace;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Spline Sans Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
-.scrollbar-hidden {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.scrollbar-hidden::-webkit-scrollbar {
+.scrollbar-none::-webkit-scrollbar {
     display: none;
 }
 

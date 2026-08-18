@@ -121,7 +121,7 @@ function RenderActions({ report, setReport }) {
     return (
         <div
             ref={actionsContainerRef}
-            className="card-wrapper h-160 lg:h-[73vh] overflow-y-auto scrollbar-hidden space-y-2 lg:space-y-4"
+            className="card-wrapper overflow-y-auto scrollbar-none space-y-2 lg:space-y-4"
         >
             {report.actions.length > 0 ? (
                 report.actions.map((action, index) => {

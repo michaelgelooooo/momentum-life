@@ -4,7 +4,7 @@ import Navbar from "../components/layout/Navbar";
 
 function AppLayout() {
     return (
-        <main className="min-h-screen bg-rose-100 font-spline p-4 pb-20 lg:pb-4 space-y-4">
+        <main className="min-h-screen bg-rose-100 font-spline p-4 space-y-4">
             <Navbar />
 
             <Outlet />

@@ -15,7 +15,7 @@ function ToDo({ report, setReport }) {
                 />
             </div>
 
-            <div className="card-wrapper h-106 overflow-y-auto scrollbar-hidden" id="ToDo">
+            <div className="card-wrapper h-[42vh] overflow-y-auto scrollbar-none" id="ToDo">
                 <RenderTasks
                     report={report}
                     setReport={setReport}
