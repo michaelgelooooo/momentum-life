@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -52,9 +53,88 @@ function Navbar() {
             </div>
 
             <div className="navbar-end">
-                <a href="/" className="navbar-brand-small">
-                    <i className="fas fa-circle-user"></i>
-                </a>
+                <div className="dropdown dropdown-end">
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        className="navbar-brand-small cursor-pointer"
+                    >
+                        <i className="fas fa-bars"></i>
+                    </div>
+
+                    <ul
+                        tabIndex="-1"
+                        className="dropdown-content menu dropdown-wrapper"
+                    >
+                        <div className="space-y-0.5">
+                            <li className="menu-title">
+                                <div className="flex items-center gap-2">
+                                    <hr className="border w-full" />
+                                    <span>PAGES</span>
+                                    <hr className="border w-full" />
+                                </div>
+                            </li>
+                            <li className="dropdown-item-wrapper">
+                                <Link to="/">
+                                    <i className="fas fa-house"></i>
+                                    Dashboard
+                                </Link>
+                            </li>
+
+                            <li className="dropdown-item-wrapper">
+                                <Link to="/actions">
+                                    <i className="fas fa-list-check"></i>
+                                    Action Library
+                                </Link>
+                            </li>
+
+                            <li className="dropdown-item-wrapper">
+                                <Link to="/">
+                                    <i className="fas fa-calendar-days"></i>
+                                    Plan Templates
+                                </Link>
+                            </li>
+
+                            <li className="dropdown-item-wrapper">
+                                <Link to="/">
+                                    <i className="fas fa-clock-rotate-left"></i>
+                                    History
+                                </Link>
+                            </li>
+
+                            <li className="dropdown-item-wrapper">
+                                <Link to="/">
+                                    <i className="fas fa-chart-column"></i>
+                                    Statistics
+                                </Link>
+                            </li>
+                        </div>
+
+                        <div className="space-y-0.5">
+                            <li className="menu-title">
+                                <div className="flex items-center gap-2">
+                                    <hr className="border w-full" />
+                                    <span>MORE</span>
+                                    <hr className="border w-full" />
+                                </div>
+                            </li>
+
+                            <li className="dropdown-item-wrapper">
+                                <Link to="/">
+                                    <i className="fas fa-gear"></i>
+                                    Settings
+                                </Link>
+                            </li>
+
+                            <li className="dropdown-item-wrapper">
+                                <Link to="/">
+                                    <i className="fas fa-circle-info"></i>
+                                    About
+                                </Link>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
             </div>
         </div>
     );

@@ -114,3 +114,7 @@
     @apply text-2xl lg:text-4xl text-rose-50;
     text-shadow: 2px 2px 0 black;
 }
+
+.dropdown-item-wrapper {
+    @apply bg-rose-300 border-2 w-full border-black rounded-lg;
+}
