@@ -37,10 +37,10 @@ function SearchAction({ onFilterChange }) {
     }
 
     return (
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex flex-col lg:flex-row gap-2 shrink-0">
             {/* Search */}
-            <div className="flex-1 min-w-0">
-                <label className="input input-wrapper">
+            <div className="w-full lg:flex-1 lg:min-w-0">
+                <label className="input input-wrapper w-full">
                     <i className="fas fa-magnifying-glass"></i>
 
                     <input
@@ -52,29 +52,32 @@ function SearchAction({ onFilterChange }) {
                 </label>
             </div>
 
-            {/* Category */}
-            <div className="shrink-0">
-                <select
-                    className="select input-wrapper"
-                    value={category}
-                    onChange={handleCategoryChange}
-                >
-                    <option value="all">All</option>
-                    <option value="productive">Productive</option>
-                    <option value="routine">Routine</option>
-                    <option value="leisure">Leisure</option>
-                </select>
-            </div>
+            {/* Filters */}
+            <div className="flex gap-2 w-full lg:w-auto">
+                {/* Category */}
+                <div className="flex-1 lg:flex-none">
+                    <select
+                        className="select input-wrapper w-full lg:w-auto"
+                        value={category}
+                        onChange={handleCategoryChange}
+                    >
+                        <option value="all">All</option>
+                        <option value="productive">Productive</option>
+                        <option value="routine">Routine</option>
+                        <option value="leisure">Leisure</option>
+                    </select>
+                </div>
 
-            {/* Reset */}
-            <button
-                type="button"
-                className="btn btn-wrapper btn-square shrink-0"
-                title="Reset filters"
-                onClick={handleReset}
-            >
-                <i className="fas fa-rotate-left"></i>
-            </button>
+                {/* Reset */}
+                <button
+                    type="button"
+                    className="btn btn-wrapper btn-square bg-rose-50 rounded-lg"
+                    title="Reset filters"
+                    onClick={handleReset}
+                >
+                    <i className="fas fa-rotate-left"></i>
+                </button>
+            </div>
         </div>
     );
 }

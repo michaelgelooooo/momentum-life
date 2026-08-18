@@ -18,10 +18,10 @@ function Navbar() {
                 <a href="/" className="navbar-brand hidden lg:block">
                     <span className="font-fascinate">MOMENTUM</span>
                     <i className="fas fa-caret-right"></i>
-                    <span className="font-lobster">Life</span>
+                    <span className="font-agbalumo">Life</span>
                 </a>
 
-                <a href="/" className="navbar-brand-small lg:hidden">
+                <a href="/" className="navbar-brand lg:hidden">
                     <i className="fa-brands fa-files-pinwheel"></i>
                 </a>
             </div>
@@ -57,7 +57,7 @@ function Navbar() {
                     <div
                         tabIndex={0}
                         role="button"
-                        className="navbar-brand-small cursor-pointer"
+                        className="navbar-brand cursor-pointer"
                     >
                         <i className="fas fa-bars"></i>
                     </div>

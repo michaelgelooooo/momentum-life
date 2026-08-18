@@ -82,12 +82,12 @@ function RenderTasks({ report, setReport, actionId }) {
                             <div
                                 key={task.id}
                                 className={`inner-card-wrapper ${task.status === "completed"
-                                    ? "inner-card-wrapper-completed"
-                                    : ""
+                                    ? "bg-rose-200 border-dashed"
+                                    : "bg-rose-100"
                                     } p-2 w-full space-y-1`}
                             >
                                 {!actionId && (
-                                    <span className="badge-wrapper-action gap-1">
+                                    <span className="badge-wrapper bg-rose-400 gap-1">
                                         <span className="font-bold">
                                             {action.time}
                                         </span>
@@ -122,7 +122,7 @@ function RenderTasks({ report, setReport, actionId }) {
                                     </div>
 
                                     <button
-                                        className="btn btn-wrapper btn-square btn-xs"
+                                        className="btn btn-wrapper btn-square btn-xs bg-rose-500"
                                         onClick={() =>
                                             deleteTask(action.id, task.id)
                                         }

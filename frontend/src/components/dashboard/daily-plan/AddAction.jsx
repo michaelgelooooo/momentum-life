@@ -82,7 +82,7 @@ function AddAction({ actions, report, setReport }) {
             <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-wrapper btn-circle btn-lg lg:btn-xl"
+                className="btn btn-wrapper btn-circle btn-lg lg:btn-xl  bg-rose-500"
             >
                 <i className="fas fa-plus font-bold"></i>
             </div>
@@ -165,7 +165,7 @@ function AddAction({ actions, report, setReport }) {
 
                     <button
                         type="submit"
-                        className="btn btn-wrapper rounded-lg w-full"
+                        className="btn btn-wrapper bg-rose-500 rounded-lg w-full"
                     >
                         <i className="fas fa-floppy-disk"></i>
                         SAVE

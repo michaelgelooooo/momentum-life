@@ -40,16 +40,16 @@ function ActionLibrary() {
     return (
         <div className="section-wrapper p-4 lg:p-8 h-[88vh] flex flex-col space-y-4 lg:space-y-8">
             {/* Header */}
-            <div className="flex items-center justify-between shrink-0">
+            <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="font-lobster section-heading">
+                    <h1 className="section-heading text-4xl lg:text-6xl">
                         Action Library
                     </h1>
                 </div>
 
                 <button
                     type="button"
-                    className="btn btn-wrapper btn-circle btn-lg lg:btn-xl"
+                    className="btn btn-wrapper btn-circle btn-lg lg:btn-xl bg-rose-500"
                 >
                     <i className="fas fa-plus"></i>
                 </button>
@@ -66,7 +66,7 @@ function ActionLibrary() {
                     {filteredActions.map((action) => (
                         <div
                             key={action.id}
-                            className="inner-card-wrapper p-2 lg:p-4 space-y-2"
+                            className="inner-card-wrapper bg-rose-100 p-2 lg:p-4 space-y-2"
                         >
                             {/* Header */}
                             <div className="flex items-start justify-between gap-3">
@@ -77,10 +77,9 @@ function ActionLibrary() {
 
                                     <span className="text-xs opacity-75 capitalize">
                                         <i
-                                            className={`fas ${
-                                                categoryIcons[action.category] ??
+                                            className={`fas ${categoryIcons[action.category] ??
                                                 "fa-circle-question"
-                                            } me-1`}
+                                                } me-1`}
                                         ></i>
 
                                         {action.category}
@@ -89,7 +88,7 @@ function ActionLibrary() {
 
                                 <button
                                     type="button"
-                                    className="btn btn-wrapper btn-square btn-xs shrink-0"
+                                    className="btn btn-wrapper btn-square btn-xs bg-rose-500"
                                     title="Action options"
                                 >
                                     <i className="fas fa-ellipsis-vertical"></i>

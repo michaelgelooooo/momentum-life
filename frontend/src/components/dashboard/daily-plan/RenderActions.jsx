@@ -153,10 +153,10 @@ function RenderActions({ report, setReport }) {
 
                                 <div>
                                     <span
-                                        className={`${isCurrent
-                                            ? "badge-wrapper-active"
-                                            : "badge-wrapper"
-                                            } font-bold`}
+                                        className={`badge-wrapper font-bold ${isCurrent
+                                                ? "bg-rose-500 border-black"
+                                                : "border-black/0"
+                                            }`}
                                     >
                                         {action.time}
                                     </span>
@@ -166,12 +166,11 @@ function RenderActions({ report, setReport }) {
                             </div>
 
                             <div
-                                className={`${isCurrent
-                                    ? "inner-card-wrapper-active"
-                                    : "inner-card-wrapper"
-                                    } ${action.status === "completed"
-                                        ? "inner-card-wrapper-completed"
-                                        : ""
+                                className={`inner-card-wrapper ${action.status === "completed"
+                                    ? "bg-rose-200 border-dashed"
+                                    : isCurrent
+                                        ? "bg-rose-400"
+                                        : "bg-rose-100"
                                     } p-2 lg:p-4 w-full space-y-1`}
                             >
                                 <div className="flex items-center justify-between">
