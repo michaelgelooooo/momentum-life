@@ -127,6 +127,18 @@ function Navbar() {
                             </li>
 
                             <li className="dropdown-item-wrapper">
+                                <a
+                                    onClick={() => {
+                                        localStorage.clear();
+                                        window.location.reload();
+                                    }}
+                                >
+                                    <i className="fas fa-trash"></i>
+                                    Clear Data
+                                </a>
+                            </li>
+
+                            <li className="dropdown-item-wrapper">
                                 <Link to="/">
                                     <i className="fas fa-circle-info"></i>
                                     About

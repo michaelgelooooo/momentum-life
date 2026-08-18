@@ -47,21 +47,11 @@ function RenderActions({ report, setReport }) {
         return hours * 60 + minutes;
     }
 
-    function getCategoryIcon(category) {
-        switch (category) {
-            case "productive":
-                return "fa-arrow-trend-up";
-
-            case "routine":
-                return "fa-arrows-rotate";
-
-            case "leisure":
-                return "fa-mug-hot";
-
-            default:
-                return "fa-circle-question";
-        }
-    }
+    const categoryIcons = {
+        productive: "fa-arrow-trend-up",
+        routine: "fa-arrows-rotate",
+        leisure: "fa-mug-hot",
+    };
 
     useEffect(() => {
         const container = actionsContainerRef.current;
@@ -210,7 +200,8 @@ function RenderActions({ report, setReport }) {
                                                         }`}
                                                 >
                                                     <i
-                                                        className={`fas ${getCategoryIcon(action.category)} text-xs opacity-75 me-2`}
+                                                        className={`fas ${categoryIcons[action.category] ?? "fa-circle-question"
+                                                            } text-xs opacity-75 me-2`}
                                                     ></i>
                                                     {action.name}
                                                 </h2>

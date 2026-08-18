@@ -76,21 +76,11 @@ function ActionDetails({
         });
     }
 
-    function getCategoryIcon(category) {
-        switch (category) {
-            case "productive":
-                return "fa-arrow-trend-up";
-
-            case "routine":
-                return "fa-arrows-rotate";
-
-            case "leisure":
-                return "fa-mug-hot";
-
-            default:
-                return "fa-circle-question";
-        }
-    }
+    const categoryIcons = {
+        productive: "fa-arrow-trend-up",
+        routine: "fa-arrows-rotate",
+        leisure: "fa-mug-hot",
+    };
 
     return (
         <div className="drawer drawer-end w-auto">
@@ -150,7 +140,10 @@ function ActionDetails({
                             </div>
 
                             <div className="flex items-center gap-2 text-xs font-bold tracking-widest opacity-60">
-                                <i className={`fas ${getCategoryIcon(action.category)}`}></i>
+                                <i
+                                    className={`fas ${categoryIcons[action.category] ?? "fa-circle-question"
+                                        } me-1`}
+                                ></i>
                                 <span className="uppercase">
                                     {action.category}
                                 </span>
