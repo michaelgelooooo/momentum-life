@@ -47,6 +47,12 @@ function RenderActions({ report, setReport }) {
         return hours * 60 + minutes;
     }
 
+    const categoryIcons = {
+        productive: "fa-arrow-trend-up",
+        routine: "fa-arrows-rotate",
+        leisure: "fa-mug-hot",
+    };
+
     useEffect(() => {
         const container = actionsContainerRef.current;
         const currentAction = currentActionRef.current;
@@ -105,7 +111,7 @@ function RenderActions({ report, setReport }) {
     return (
         <div
             ref={actionsContainerRef}
-            className="card-wrapper h-160 lg:h-[73vh] overflow-y-auto scrollbar-hidden space-y-2 lg:space-y-4"
+            className="card-wrapper overflow-y-auto scrollbar-none space-y-2 lg:space-y-4"
         >
             {report.actions.length > 0 ? (
                 report.actions.map((action, index) => {
@@ -147,10 +153,10 @@ function RenderActions({ report, setReport }) {
 
                                 <div>
                                     <span
-                                        className={`${isCurrent
-                                            ? "badge-wrapper-active"
-                                            : "badge-wrapper"
-                                            } font-bold`}
+                                        className={`badge-wrapper font-bold ${isCurrent
+                                                ? "bg-rose-500 border-black"
+                                                : "border-black/0"
+                                            }`}
                                     >
                                         {action.time}
                                     </span>
@@ -160,12 +166,11 @@ function RenderActions({ report, setReport }) {
                             </div>
 
                             <div
-                                className={`${isCurrent
-                                    ? "inner-card-wrapper-active"
-                                    : "inner-card-wrapper"
-                                    } ${action.status === "completed"
-                                        ? "inner-card-wrapper-completed"
-                                        : ""
+                                className={`inner-card-wrapper ${action.status === "completed"
+                                    ? "bg-rose-200 border-dashed"
+                                    : isCurrent
+                                        ? "bg-rose-400"
+                                        : "bg-rose-100"
                                     } p-2 lg:p-4 w-full space-y-1`}
                             >
                                 <div className="flex items-center justify-between">
@@ -183,14 +188,23 @@ function RenderActions({ report, setReport }) {
                                         />
 
                                         <div className="flex items-center gap-2">
-                                            <h2
-                                                className={`font-bold ${action.status === "completed"
-                                                    ? "line-through opacity-50"
-                                                    : ""
-                                                    }`}
+                                            <div
+                                                className="tooltip capitalize"
+                                                data-tip={action.category}
                                             >
-                                                {action.name}
-                                            </h2>
+                                                <h2
+                                                    className={`font-bold ${action.status === "completed"
+                                                        ? "line-through opacity-50"
+                                                        : ""
+                                                        }`}
+                                                >
+                                                    <i
+                                                        className={`fas ${categoryIcons[action.category] ?? "fa-circle-question"
+                                                            } text-xs opacity-75 me-2`}
+                                                    ></i>
+                                                    {action.name}
+                                                </h2>
+                                            </div>
 
                                             {action.tasks.length > 0 && (
                                                 <>
@@ -218,7 +232,6 @@ function RenderActions({ report, setReport }) {
                                         setReport={setReport}
                                     />
                                 </div>
-
                                 <p
                                     className={`text-xs ${action.status === "completed"
                                         ? "line-through opacity-50"

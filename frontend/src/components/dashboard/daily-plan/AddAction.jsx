@@ -54,6 +54,7 @@ function AddAction({ actions, report, setReport }) {
                 actionId: action.id,
                 name: action.name,
                 description: action.description,
+                category: action.category,
                 time,
                 status: "pending",
                 tasks: [],
@@ -81,7 +82,7 @@ function AddAction({ actions, report, setReport }) {
             <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-wrapper btn-circle btn-lg lg:btn-xl"
+                className="btn btn-wrapper btn-circle btn-lg lg:btn-xl  bg-rose-500"
             >
                 <i className="fas fa-plus font-bold"></i>
             </div>
@@ -101,70 +102,80 @@ function AddAction({ actions, report, setReport }) {
                     <hr className="border" />
 
                     <div className="space-y-2">
-                        <select
-                            className="select input-wrapper"
-                            value={selectedActionId}
-                            onChange={(event) =>
-                                setSelectedActionId(
-                                    event.target.value
-                                )
-                            }
-                        >
-                            <option value="" disabled>
-                                Select Action
-                            </option>
+                        {/* Action */}
+                        <div className="space-y-1">
+                            <label className="text-sm font-bold">
+                                Action
+                            </label>
 
-                            {actions.map((action) => (
-                                <option
-                                    key={action.id}
-                                    value={action.id}
-                                >
-                                    {action.name}
-                                </option>
-                            ))}
-                        </select>
-
-                        <select
-                            className="select input-wrapper"
-                            value={actionTime}
-                            onChange={(event) =>
-                                setActionTime(
-                                    event.target.value
-                                )
-                            }
-                        >
-                            <option value="" disabled>
-                                Select Time
-                            </option>
-
-                            {Array.from(
-                                { length: 24 },
-                                (_, hour) => {
-                                    const time =
-                                        `${String(hour).padStart(2, "0")}:00`;
-
-                                    if (usedTimes.has(time)) {
-                                        return null;
-                                    }
-
-                                    return (
-                                        <option
-                                            key={time}
-                                            value={time}
-                                        >
-                                            {time}
-                                        </option>
-                                    );
+                            <select
+                                className="select input-wrapper"
+                                value={selectedActionId}
+                                onChange={(event) =>
+                                    setSelectedActionId(event.target.value)
                                 }
-                            )}
-                        </select>
+                            >
+                                <option value="" disabled>
+                                    Select Action
+                                </option>
+
+                                {actions.map((action) => (
+                                    <option
+                                        key={action.id}
+                                        value={action.id}
+                                    >
+                                        {action.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Time */}
+                        <div className="space-y-1">
+                            <label className="text-sm font-bold">
+                                Action Time
+                            </label>
+
+                            <select
+                                className="select input-wrapper"
+                                value={actionTime}
+                                onChange={(event) =>
+                                    setActionTime(event.target.value)
+                                }
+                            >
+                                <option value="" disabled>
+                                    Select Time
+                                </option>
+
+                                {Array.from(
+                                    { length: 24 },
+                                    (_, hour) => {
+                                        const time =
+                                            `${String(hour).padStart(2, "0")}:00`;
+
+                                        if (usedTimes.has(time)) {
+                                            return null;
+                                        }
+
+                                        return (
+                                            <option
+                                                key={time}
+                                                value={time}
+                                            >
+                                                {time}
+                                            </option>
+                                        );
+                                    }
+                                )}
+                            </select>
+                        </div>
                     </div>
 
                     <hr className="border" />
 
                     <button
                         type="submit"
-                        className="btn btn-wrapper rounded-lg w-full"
+                        className="btn btn-wrapper bg-rose-500 rounded-lg w-full"
                     >
                         <i className="fas fa-floppy-disk"></i>
                         SAVE

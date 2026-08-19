@@ -8,51 +8,34 @@
     font-family: "Fascinate Inline", system-ui;
     font-weight: 400;
     font-style: normal;
-
-    -webkit-text-stroke: 0.5px black;
 }
 
-.font-lobster {
-    font-family: "Lobster", sans-serif;
-    font-weight: 900;
-    font-style: normal;
-}
-
-.font-spline {
-  font-family: "Spline Sans Mono", monospace;
-  font-optical-sizing: auto;
+.font-modak {
+  font-family: "Modak", system-ui;
   font-weight: 400;
   font-style: normal;
 }
 
-.scrollbar-hidden {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
-
-.scrollbar-hidden::-webkit-scrollbar {
-    display: none;
+.font-spline {
+    font-family: "Spline Sans Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .navbar-brand {
     @apply text-4xl text-rose-50;
-    @apply transition-all duration-100 ease-out hover:text-rose-400 hover:scale-[1.02];
-
-    text-shadow: 2px 2px 0 black;
-    -webkit-text-stroke: 0.5px black;
-}
-
-.navbar-brand-small {
-    @apply text-4xl text-rose-50;
-    @apply transition-all duration-100 ease-out hover:text-rose-400;
+    @apply transition-colors duration-150 ease-out hover:text-rose-400;
 
     text-shadow: 2px 2px 0 black;
     -webkit-text-stroke: 0.5px black;
 }
 
 .section-heading {
-    @apply text-4xl lg:text-6xl text-rose-50;
+    @apply text-rose-50;
+
     text-shadow: 2px 2px 0 black;
+    -webkit-text-stroke: 0.5px black;
 }
 
 .section-wrapper {
@@ -71,27 +54,16 @@
 }
 
 .inner-card-wrapper {
-    @apply bg-rose-100 border-2 border-black rounded-lg;
-}
-
-.inner-card-wrapper-active {
-    @apply bg-rose-400 border-2 border-black rounded-lg;
-}
-
-.inner-card-wrapper-completed {
-    @apply bg-rose-200 border-2 border-dashed border-black rounded-lg;
+    @apply border-2 border-black rounded-lg;
 }
 
 .input-wrapper {
-    @apply bg-rose-300 border-2 w-full border-black rounded-lg;
+    @apply bg-rose-300 border-2 border-black rounded-lg;
 }
 
 .btn-wrapper {
-    @apply bg-rose-500 hover:bg-rose-300 border-2 border-black shadow-none;
-}
-
-.btn-wrapper-neutral {
-    @apply bg-mauve-200 hover:bg-rose-300 border-2 border-black shadow-none;
+    @apply hover:bg-rose-400 border-2 border-black shadow-none;
+    @apply transition-colors duration-150 ease-out;
 }
 
 .checkbox-wrapper {
@@ -99,18 +71,9 @@
 }
 
 .badge-wrapper {
-    @apply badge badge-xs lg:badge-sm bg-transparent border-2 border-black/0 rounded-full p-1;
+    @apply text-xs border-2 rounded-full px-1;
 }
 
-.badge-wrapper-active {
-    @apply badge badge-xs lg:badge-sm bg-rose-500 border-2 border-black rounded-full p-1;
-}
-
-.badge-wrapper-action {
-    @apply badge badge-xs lg:badge-sm bg-rose-400 border-2 border-black rounded-full p-1;
-}
-
-.drawer-heading {
-    @apply text-2xl lg:text-4xl text-rose-50;
-    text-shadow: 2px 2px 0 black;
+.dropdown-item-wrapper {
+    @apply bg-rose-300 border-2 border-black rounded-lg;
 }

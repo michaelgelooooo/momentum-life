@@ -15,7 +15,7 @@ function Stats({ report }) {
 
     return (
         <section className="section-wrapper p-4 lg:p-8 space-y-4" id="Stats">
-            <h2 className="font-lobster section-heading">
+            <h2 className="section-heading font-modak text-4xl lg:text-6xl">
                 Stats
             </h2>
             <div className="card-wrapper w-full grid grid-cols-3 divide-x-2 divide-black">
