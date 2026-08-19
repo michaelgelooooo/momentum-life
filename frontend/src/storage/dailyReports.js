@@ -11,7 +11,8 @@ export function createDailyReport(plan, actions) {
         actions: plan.actions
             .map((planAction) => {
                 const action = actions.find(
-                    (action) => action.id === planAction.actionId
+                    (action) =>
+                        action.id === planAction.actionId
                 );
 
                 if (!action) {
@@ -23,7 +24,7 @@ export function createDailyReport(plan, actions) {
                     actionId: action.id,
                     name: action.name,
                     description: action.description,
-                    category:action.category,
+                    category: action.category,
                     time: planAction.time,
                     status: "pending",
 
@@ -40,16 +41,33 @@ export function createDailyReport(plan, actions) {
     };
 }
 
-export function getCurrentDailyReport(plan, actions) {
+export function createEmptyDailyReport() {
+    return {
+        id: `report-${getToday()}`,
+        date: getToday(),
+        status: "active",
+        actions: [],
+    };
+}
+
+export function getCurrentDailyReport() {
     const stored = localStorage.getItem(
         STORAGE_KEYS.CURRENT_REPORT
     );
 
-    if (stored) {
-        return JSON.parse(stored);
-    }
+    return stored ? JSON.parse(stored) : null;
+}
 
+export function startDailyReport(plan, actions) {
     const report = createDailyReport(plan, actions);
+
+    saveCurrentDailyReport(report);
+
+    return report;
+}
+
+export function startEmptyDailyReport() {
+    const report = createEmptyDailyReport();
 
     saveCurrentDailyReport(report);
 
@@ -102,7 +120,11 @@ export function finalizeDailyReport() {
     return finalizedReport;
 }
 
-export function addTaskToAction(report, actionId, taskName) {
+export function addTaskToAction(
+    report,
+    actionId,
+    taskName
+) {
     return {
         ...report,
 
@@ -126,4 +148,3 @@ export function addTaskToAction(report, actionId, taskName) {
         }),
     };
 }
-

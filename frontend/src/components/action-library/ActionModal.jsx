@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
+const MAX_NAME_LENGTH = 40;
+const MAX_DESCRIPTION_LENGTH = 160;
+
 function ActionModal({
     action = null,
+    categories = [],
     onSave,
     onDelete,
 }) {
@@ -30,11 +34,19 @@ function ActionModal({
 
         if (!trimmedName) {
             newErrors.name = "Action name is required.";
+        } else if (trimmedName.length > MAX_NAME_LENGTH) {
+            newErrors.name =
+                `Action name must be ${MAX_NAME_LENGTH} characters or less.`;
         }
 
         if (!trimmedDescription) {
             newErrors.description =
                 "Description is required.";
+        } else if (
+            trimmedDescription.length > MAX_DESCRIPTION_LENGTH
+        ) {
+            newErrors.description =
+                `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less.`;
         }
 
         if (!category) {
@@ -87,22 +99,28 @@ function ActionModal({
 
                         <input
                             type="text"
-                            className={`input input-wrapper w-full ${errors.name
-                                ? "border-red-500"
-                                : ""
-                                }`}
+                            className={`input input-wrapper w-full ${
+                                errors.name
+                                    ? "border-red-500"
+                                    : ""
+                            }`}
                             placeholder="e.g. Exercise"
                             value={name}
+                            maxLength={MAX_NAME_LENGTH}
                             onChange={(event) =>
                                 setName(event.target.value)
                             }
                         />
 
-                        {errors.name && (
-                            <p className="text-xs text-red-600">
+                        <div className="flex justify-between text-xs">
+                            <span className="text-red-600">
                                 {errors.name}
-                            </p>
-                        )}
+                            </span>
+
+                            <span className="opacity-60 ml-auto">
+                                {name.length}/{MAX_NAME_LENGTH}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Description */}
@@ -112,12 +130,14 @@ function ActionModal({
                         </label>
 
                         <textarea
-                            className={`textarea input-wrapper w-full ${errors.description
-                                ? "border-red-500"
-                                : ""
-                                }`}
+                            className={`textarea input-wrapper w-full ${
+                                errors.description
+                                    ? "border-red-500"
+                                    : ""
+                            }`}
                             placeholder="Describe what this action is for..."
                             value={description}
+                            maxLength={MAX_DESCRIPTION_LENGTH}
                             onChange={(event) =>
                                 setDescription(
                                     event.target.value
@@ -125,11 +145,15 @@ function ActionModal({
                             }
                         />
 
-                        {errors.description && (
-                            <p className="text-xs text-red-600">
+                        <div className="flex justify-between text-xs">
+                            <span className="text-red-600">
                                 {errors.description}
-                            </p>
-                        )}
+                            </span>
+
+                            <span className="opacity-60 ml-auto">
+                                {description.length}/{MAX_DESCRIPTION_LENGTH}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Category */}
@@ -139,32 +163,28 @@ function ActionModal({
                         </label>
 
                         <select
-                            className={`select input-wrapper w-full ${errors.category
-                                ? "border-red-500"
-                                : ""
-                                }`}
+                            className={`select input-wrapper w-full ${
+                                errors.category
+                                    ? "border-red-500"
+                                    : ""
+                            }`}
                             value={category}
                             onChange={(event) =>
-                                setCategory(
-                                    event.target.value
-                                )
+                                setCategory(event.target.value)
                             }
                         >
                             <option value="" disabled>
                                 Select a category
                             </option>
 
-                            <option value="productive">
-                                Productive
-                            </option>
-
-                            <option value="routine">
-                                Routine
-                            </option>
-
-                            <option value="leisure">
-                                Leisure
-                            </option>
+                            {categories.map((category) => (
+                                <option
+                                    key={category.id}
+                                    value={category.value}
+                                >
+                                    {category.name}
+                                </option>
+                            ))}
                         </select>
 
                         {errors.category && (

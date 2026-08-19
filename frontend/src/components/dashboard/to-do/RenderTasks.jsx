@@ -1,6 +1,10 @@
 import { saveCurrentDailyReport } from "../../../storage/dailyReports";
 
-function RenderTasks({ report, setReport, actionId }) {
+function RenderTasks({
+    report,
+    setReport,
+    actionId,
+}) {
     function toggleTask(actionId, taskId) {
         setReport((currentReport) => {
             const updatedReport = {

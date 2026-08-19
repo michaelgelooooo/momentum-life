@@ -1,4 +1,4 @@
-export const defaultDailyPlans = [
+export const seedDailyPlans = [
     {
         id: "plan-001",
         name: "Work Day",

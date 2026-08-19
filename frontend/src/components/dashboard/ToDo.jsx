@@ -2,6 +2,9 @@ import AddTask from "./to-do/AddTask";
 import RenderTasks from "./to-do/RenderTasks";
 
 function ToDo({ report, setReport }) {
+    const actions = report?.actions ?? [];
+    const hasActions = actions.length > 0;
+
     return (
         <section className="section-wrapper p-4 lg:p-8 space-y-4 h-[56vh] flex flex-col">
             <div className="flex items-center justify-between shrink-0">
@@ -9,10 +12,12 @@ function ToDo({ report, setReport }) {
                     To-Do
                 </h2>
 
-                <AddTask
-                    report={report}
-                    setReport={setReport}
-                />
+                {hasActions && (
+                    <AddTask
+                        report={report}
+                        setReport={setReport}
+                    />
+                )}
             </div>
 
             <div

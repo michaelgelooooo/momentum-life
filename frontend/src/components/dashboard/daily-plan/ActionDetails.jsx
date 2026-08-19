@@ -3,6 +3,7 @@ import { useState } from "react";
 import AddTask from "../to-do/AddTask";
 import RenderTasks from "../to-do/RenderTasks";
 
+import { getCategories } from "../../../storage/categories";
 import {
     saveCurrentDailyReport,
 } from "../../../storage/dailyReports";
@@ -13,6 +14,11 @@ function ActionDetails({
     setReport,
 }) {
     const drawerId = `drawer-${action.id}`;
+    const categories = getCategories();
+
+    const category = categories.find(
+        (item) => item.value === action.category
+    );
 
     const usedTimes = report.actions
         .filter((currentAction) => currentAction.id !== action.id)
@@ -76,11 +82,7 @@ function ActionDetails({
         });
     }
 
-    const categoryIcons = {
-        productive: "fa-arrow-trend-up",
-        routine: "fa-arrows-rotate",
-        leisure: "fa-mug-hot",
-    };
+
 
     return (
         <div className="drawer drawer-end w-auto">
@@ -140,11 +142,12 @@ function ActionDetails({
 
                         <div className="flex items-center gap-2 text-xs font-bold tracking-widest opacity-60">
                             <i
-                                className={`fas ${categoryIcons[action.category] ?? "fa-circle-question"
+                                className={`fas ${category?.icon ?? "fa-circle-question"
                                     } me-1`}
-                            ></i>
+                            />
+
                             <span className="uppercase">
-                                {action.category}
+                                {category?.name ?? action.category}
                             </span>
                         </div>
 

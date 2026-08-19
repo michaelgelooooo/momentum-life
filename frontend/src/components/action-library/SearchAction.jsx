@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-function SearchAction({ onFilterChange }) {
+function SearchAction({
+    onFilterChange,
+    categories,
+}) {
     const [search, setSearch] = useState("");
     const [category, setCategory] = useState("all");
 
@@ -61,10 +64,18 @@ function SearchAction({ onFilterChange }) {
                         value={category}
                         onChange={handleCategoryChange}
                     >
-                        <option value="all">All</option>
-                        <option value="productive">Productive</option>
-                        <option value="routine">Routine</option>
-                        <option value="leisure">Leisure</option>
+                        <option value="all">
+                            All
+                        </option>
+
+                        {categories.map((category) => (
+                            <option
+                                key={category.id}
+                                value={category.value}
+                            >
+                                {category.name}
+                            </option>
+                        ))}
                     </select>
                 </div>
 
