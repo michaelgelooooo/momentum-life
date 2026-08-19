@@ -66,35 +66,47 @@ function AddTask({
                     <hr className="border" />
 
                     <div className="space-y-2">
-
+                        {/* Action */}
                         {!actionId && (
-                            <select
-                                name="action"
-                                className="select input-wrapper"
-                                defaultValue=""
-                            >
-                                <option value="" disabled>
-                                    Select Action
-                                </option>
+                            <div className="space-y-1">
+                                <label className="text-sm font-bold">
+                                    Action
+                                </label>
 
-                                {report.actions.map((action) => (
-                                    <option
-                                        key={action.id}
-                                        value={action.id}
-                                    >
-                                        {action.time} — {action.name}
+                                <select
+                                    name="action"
+                                    className="select input-wrapper"
+                                    defaultValue=""
+                                >
+                                    <option value="" disabled>
+                                        Select Action
                                     </option>
-                                ))}
-                            </select>
+
+                                    {report.actions.map((action) => (
+                                        <option
+                                            key={action.id}
+                                            value={action.id}
+                                        >
+                                            {action.time} — {action.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         )}
 
-                        <input
-                            name="task"
-                            type="text"
-                            className="input input-wrapper"
-                            placeholder="Enter Task Name"
-                        />
+                        {/* Task */}
+                        <div className="space-y-1">
+                            <label className="text-sm font-bold">
+                                Task Name
+                            </label>
 
+                            <input
+                                name="task"
+                                type="text"
+                                className="input input-wrapper"
+                                placeholder="Enter Task Name"
+                            />
+                        </div>
                     </div>
 
                     <hr className="border" />

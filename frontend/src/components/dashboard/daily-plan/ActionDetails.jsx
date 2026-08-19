@@ -108,7 +108,7 @@ function ActionDetails({
 
                 <div className="menu bg-rose-100 h-full w-full lg:w-160 p-4 space-y-4 flex flex-col overflow-hidden">
                     <div className="section-wrapper flex items-center justify-between p-2 lg:p-4">
-                        <h1 className="section-heading text-2xl lg:text-4xl">
+                        <h1 className="section-heading font-agbalumo text-2xl lg:text-4xl">
                             Action Details
                         </h1>
 
@@ -124,7 +124,7 @@ function ActionDetails({
                         {/* Section label */}
                         <div className="flex items-center justify-between">
                             {/* Action name */}
-                            <h2 className="section-heading text-4xl leading-none">
+                            <h2 className="section-heading font-agbalumo text-4xl leading-none">
                                 {action.name}
                             </h2>
 
@@ -148,7 +148,7 @@ function ActionDetails({
                             </span>
                         </div>
 
-                        <hr className="border border-black" />
+                        <hr className="border" />
 
                         {/* Description */}
                         <div className="space-y-1">
@@ -161,7 +161,7 @@ function ActionDetails({
                             </p>
                         </div>
 
-                        <hr className="border border-dashed border-black" />
+                        <hr className="border border-dashed" />
 
                         {/* Editable time */}
                         <div className="space-y-2">
@@ -197,7 +197,7 @@ function ActionDetails({
 
                     <div className="section-wrapper p-4 flex flex-col flex-1 min-h-0 space-y-2 lg:space-y-4">
                         <div className="flex items-center justify-between">
-                            <h2 className="section-heading text-4xl leading-none">
+                            <h2 className="section-heading font-agbalumo text-4xl leading-none">
                                 To-Do
                             </h2>
 
@@ -223,8 +223,8 @@ function ActionDetails({
                 <div className="modal modal-open">
                     <div className="modal-box section-wrapper space-y-4">
                         <div className="flex items-center justify-between">
-                            <h3 className="section-heading text-2xl lg:text-4xl">
-                                Delete Action?
+                            <h3 className="text-xl font-bold">
+                                DELETE ACTION
                             </h3>
 
                             <button
@@ -235,35 +235,39 @@ function ActionDetails({
                             </button>
                         </div>
 
-                        <hr className="border rounded black" />
+                        <hr className="border" />
 
                         <div className="space-y-2">
-                            <p>
+                            <p className="text-sm">
                                 Are you sure you want to delete{" "}
                                 <strong>{action.name}</strong>?
                             </p>
 
-                            {action.tasks.length > 0 ? (
-                                <div className="card-wrapper space-y-1">
-                                    <p className="text-sm font-bold">
-                                        The following tasks will also be deleted:
-                                    </p>
 
-                                    <ul className="list-disc list-inside space-y-1 text-sm opacity-75">
-                                        {action.tasks.map((task) => (
-                                            <li key={task.id}>
-                                                {task.name}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ) : (
-                                <p className="text-sm opacity-75">
-                                    This action has no associated tasks.
-                                </p>
-                            )}
+                            <div className="card-wrapper">
+                                {action.tasks.length > 0 ? (
+                                    <div className="space-y-1">
+                                        <p className="text-sm font-bold">
+                                            The following tasks will also be deleted:
+                                        </p>
+
+                                        <ul className="list-disc list-inside space-y-1 text-sm opacity-75">
+                                            {action.tasks.map((task) => (
+                                                <li key={task.id}>
+                                                    {task.name}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ) : (
+                                    <p className="text-sm opacity-75">
+                                        This action has no associated tasks.
+                                    </p>
+                                )}
+
+                            </div>
                         </div>
-                        <hr className="border rounded black" />
+                        <hr className="border" />
 
                         <div className="modal-action">
                             <button

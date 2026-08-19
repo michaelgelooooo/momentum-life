@@ -26,7 +26,7 @@
 
 .navbar-brand {
     @apply text-4xl text-rose-50;
-    @apply transition-all duration-100 ease-out hover:text-rose-400 hover:scale-[1.02];
+    @apply transition-colors duration-150 ease-out hover:text-rose-400;
 
     text-shadow: 2px 2px 0 black;
     -webkit-text-stroke: 0.5px black;
@@ -34,10 +34,6 @@
 
 .section-heading {
     @apply text-rose-50;
-
-    font-family: "Agbalumo", system-ui;
-    font-weight: 900;
-    font-style: normal;
 
     text-shadow: 2px 2px 0 black;
     -webkit-text-stroke: 0.5px black;
@@ -68,7 +64,7 @@
 
 .btn-wrapper {
     @apply hover:bg-rose-400 border-2 border-black shadow-none;
-    @apply transition-colors duration-100 ease-out;
+    @apply transition-colors duration-150 ease-out;
 }
 
 .checkbox-wrapper {
