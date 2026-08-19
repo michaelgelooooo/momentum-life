@@ -3,9 +3,9 @@ import RenderTasks from "./to-do/RenderTasks";
 
 function ToDo({ report, setReport }) {
     return (
-        <section className="section-wrapper p-4 lg:p-8 space-y-4 lg:space-y-8 h-[54.5vh] flex flex-col">
+        <section className="section-wrapper p-4 lg:p-8 space-y-4 h-[56vh] flex flex-col">
             <div className="flex items-center justify-between shrink-0">
-                <h2 className="section-heading font-agbalumo text-4xl lg:text-6xl">
+                <h2 className="section-heading font-modak text-4xl lg:text-6xl">
                     To-Do
                 </h2>
 

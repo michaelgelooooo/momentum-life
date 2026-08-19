@@ -108,7 +108,7 @@ function ActionDetails({
 
                 <div className="menu bg-rose-100 h-full w-full lg:w-160 p-4 space-y-4 flex flex-col overflow-hidden">
                     <div className="section-wrapper flex items-center justify-between p-2 lg:p-4">
-                        <h1 className="section-heading font-agbalumo text-2xl lg:text-4xl">
+                        <h1 className="section-heading font-modak text-2xl lg:text-4xl">
                             Action Details
                         </h1>
 
@@ -120,11 +120,11 @@ function ActionDetails({
                         </label>
                     </div>
 
-                    <div className="section-wrapper p-4 space-y-2 lg:space-y-4">
+                    <div className="section-wrapper p-4 space-y-2">
                         {/* Section label */}
                         <div className="flex items-center justify-between">
                             {/* Action name */}
-                            <h2 className="section-heading font-agbalumo text-4xl leading-none">
+                            <h2 className="section-heading font-modak text-4xl leading-none">
                                 {action.name}
                             </h2>
 
@@ -197,7 +197,7 @@ function ActionDetails({
 
                     <div className="section-wrapper p-4 flex flex-col flex-1 min-h-0 space-y-2 lg:space-y-4">
                         <div className="flex items-center justify-between">
-                            <h2 className="section-heading font-agbalumo text-4xl leading-none">
+                            <h2 className="section-heading font-modak text-4xl leading-none">
                                 To-Do
                             </h2>
 

@@ -18,7 +18,7 @@ function Navbar() {
                 <a href="/" className="navbar-brand hidden lg:block">
                     <span className="font-fascinate">MOMENTUM</span>
                     <i className="fas fa-caret-right"></i>
-                    <span className="font-agbalumo">Life</span>
+                    <span className="font-modak">Life</span>
                 </a>
 
                 <a href="/" className="navbar-brand lg:hidden">
