@@ -66,14 +66,6 @@ export function startDailyReport(plan, actions) {
     return report;
 }
 
-export function startEmptyDailyReport() {
-    const report = createEmptyDailyReport();
-
-    saveCurrentDailyReport(report);
-
-    return report;
-}
-
 export function saveCurrentDailyReport(report) {
     localStorage.setItem(
         STORAGE_KEYS.CURRENT_REPORT,

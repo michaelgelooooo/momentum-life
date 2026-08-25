@@ -30,15 +30,15 @@ function DailyPlan({
                 />
             ) : (
                 <div className="card-wrapper flex-1 flex items-center justify-center">
-                    <div className="text-center space-y-3">
-                        <i className="fas fa-calendar-plus text-4xl opacity-50"></i>
+                    <div className="text-center space-y-4">
+                        <div className="opacity-75">
+                            <i className="fas fa-calendar-plus text-4xl"></i>
 
-                        <div>
                             <h2 className="font-bold text-xl">
                                 No Daily Plan
                             </h2>
 
-                            <p className="text-sm opacity-75">
+                            <p className="text-sm">
                                 Start your day with a template,
                                 or add actions manually.
                             </p>

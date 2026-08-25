@@ -60,7 +60,7 @@ function SearchAction({
                 {/* Category */}
                 <div className="flex-1 lg:flex-none">
                     <select
-                        className="select input-wrapper w-full lg:w-auto"
+                        className="select input-wrapper w-full lg:w-40"
                         value={category}
                         onChange={handleCategoryChange}
                     >

@@ -47,7 +47,7 @@ function AddAction({
     }
 
     function addAction(action, time) {
-        if (!/^\d{2}:00$/.test(time)) {
+        if (!/^\d{2}:(00|30)$/.test(time)) {
             return;
         }
 
@@ -179,21 +179,14 @@ function AddAction({
                                 </option>
 
                                 {Array.from(
-                                    { length: 24 },
-                                    (_, hour) => {
-                                        const time =
-                                            `${String(
-                                                hour
-                                            ).padStart(
-                                                2,
-                                                "0"
-                                            )}:00`;
+                                    { length: 48 },
+                                    (_, index) => {
+                                        const hour = Math.floor(index / 2);
+                                        const minute = index % 2 === 0 ? "00" : "30";
 
-                                        if (
-                                            usedTimes.has(
-                                                time
-                                            )
-                                        ) {
+                                        const time = `${String(hour).padStart(2, "0")}:${minute}`;
+
+                                        if (usedTimes.has(time)) {
                                             return null;
                                         }
 

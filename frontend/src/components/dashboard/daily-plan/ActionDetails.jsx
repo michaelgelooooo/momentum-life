@@ -247,7 +247,7 @@ function ActionDetails({
                             </p>
 
 
-                            <div className="card-wrapper">
+                            <div className="card-wrapper rounded-lg!">
                                 {action.tasks.length > 0 ? (
                                     <div className="space-y-1">
                                         <p className="text-sm font-bold">

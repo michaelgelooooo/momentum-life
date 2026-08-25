@@ -4,6 +4,7 @@ import AppLayout from "./layouts/AppLayout";
 
 import Dashboard from "./pages/Dashboard";
 import ActionLibrary from "./pages/ActionLibrary";
+import TemplateLibrary from "./pages/TemplateLibrary";
 
 function App() {
     return (
@@ -14,6 +15,10 @@ function App() {
                     <Route
                         path="/actions"
                         element={<ActionLibrary />}
+                    />
+                    <Route
+                        path="/templates"
+                        element={<TemplateLibrary />}
                     />
                 </Route>
             </Routes>

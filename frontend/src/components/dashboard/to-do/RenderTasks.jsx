@@ -5,6 +5,8 @@ function RenderTasks({
     setReport,
     actionId,
 }) {
+    const actions = report?.actions ?? [];
+
     function toggleTask(actionId, taskId) {
         setReport((currentReport) => {
             const updatedReport = {
@@ -68,10 +70,10 @@ function RenderTasks({
     }
 
     const visibleActions = actionId
-        ? report.actions.filter(
+        ? actions.filter(
             (action) => action.id === actionId
         )
-        : report.actions;
+        : actions;
 
     const hasTasks = visibleActions.some(
         (action) => action.tasks.length > 0
@@ -80,15 +82,16 @@ function RenderTasks({
     return (
         <div className="h-full">
             {hasTasks ? (
-                <div className="space-y-2 pb-2 lg:pb-4">{
-                    visibleActions.flatMap((action) =>
+                <div className="space-y-2 pb-2 lg:pb-4">
+                    {visibleActions.flatMap((action) =>
                         action.tasks.map((task) => (
                             <div
                                 key={task.id}
-                                className={`inner-card-wrapper ${task.status === "completed"
-                                    ? "bg-rose-200 border-dashed"
-                                    : "bg-rose-100"
-                                    } p-2 w-full space-y-1`}
+                                className={`inner-card-wrapper ${
+                                    task.status === "completed"
+                                        ? "bg-rose-200 border-dashed"
+                                        : "bg-rose-100"
+                                } p-2 w-full space-y-1`}
                             >
                                 {!actionId && (
                                     <span className="badge-wrapper bg-rose-400 gap-1">
@@ -96,7 +99,9 @@ function RenderTasks({
                                             {action.time}
                                         </span>
 
-                                        <span className="opacity-75">•</span>
+                                        <span className="opacity-75">
+                                            •
+                                        </span>
 
                                         <span>
                                             {action.name}
@@ -109,17 +114,23 @@ function RenderTasks({
                                         <input
                                             type="checkbox"
                                             className="checkbox checkbox-wrapper checkbox-sm"
-                                            checked={task.status === "completed"}
+                                            checked={
+                                                task.status === "completed"
+                                            }
                                             onChange={() =>
-                                                toggleTask(action.id, task.id)
+                                                toggleTask(
+                                                    action.id,
+                                                    task.id
+                                                )
                                             }
                                         />
 
                                         <span
-                                            className={`font-semibold text-xs lg:text-sm ${task.status === "completed"
-                                                ? "line-through opacity-50"
-                                                : ""
-                                                }`}
+                                            className={`font-semibold text-xs lg:text-sm ${
+                                                task.status === "completed"
+                                                    ? "line-through opacity-50"
+                                                    : ""
+                                            }`}
                                         >
                                             {task.name}
                                         </span>
@@ -128,7 +139,10 @@ function RenderTasks({
                                     <button
                                         className="btn btn-wrapper btn-square btn-xs bg-rose-500"
                                         onClick={() =>
-                                            deleteTask(action.id, task.id)
+                                            deleteTask(
+                                                action.id,
+                                                task.id
+                                            )
                                         }
                                     >
                                         <i className="fas fa-xmark"></i>
@@ -136,12 +150,12 @@ function RenderTasks({
                                 </div>
                             </div>
                         ))
-                    )
-                }</div>
+                    )}
+                </div>
             ) : (
                 <div className="h-full flex items-center justify-center text-center opacity-75">
                     <div>
-                        <i className="fas fa-list text-2xl mb-2"></i>
+                        <i className="fas fa-list text-2xl"></i>
 
                         <p className="font-semibold">
                             {actionId

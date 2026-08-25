@@ -92,18 +92,23 @@ function ActionModal({
                     className="space-y-4"
                 >
                     {/* Action Name */}
-                    <div className="space-y-1">
-                        <label className="text-sm font-bold">
-                            Action Name
-                        </label>
+                    <div>
+                        <div className="flex justify-between text-xs">
+                            <label className="text-sm font-bold">
+                                Action Name
+                            </label>
+
+                            <span className="opacity-75">
+                                {name.length}/{MAX_NAME_LENGTH}
+                            </span>
+                        </div>
 
                         <input
                             type="text"
-                            className={`input input-wrapper w-full ${
-                                errors.name
-                                    ? "border-red-500"
-                                    : ""
-                            }`}
+                            className={`input input-wrapper w-full ${errors.name
+                                ? "border-red-500"
+                                : ""
+                                }`}
                             placeholder="e.g. Exercise"
                             value={name}
                             maxLength={MAX_NAME_LENGTH}
@@ -112,29 +117,29 @@ function ActionModal({
                             }
                         />
 
-                        <div className="flex justify-between text-xs">
-                            <span className="text-red-600">
-                                {errors.name}
-                            </span>
-
-                            <span className="opacity-60 ml-auto">
-                                {name.length}/{MAX_NAME_LENGTH}
-                            </span>
-                        </div>
+                        <span className="text-red-600 text-xs">
+                            {errors.name}
+                        </span>
                     </div>
 
                     {/* Description */}
-                    <div className="space-y-1">
-                        <label className="text-sm font-bold">
-                            Description
-                        </label>
+                    <div>
+
+                        <div className="flex justify-between text-xs">
+                            <label className="text-sm font-bold">
+                                Description
+                            </label>
+
+                            <span className="opacity-75">
+                                {description.length}/{MAX_DESCRIPTION_LENGTH}
+                            </span>
+                        </div>
 
                         <textarea
-                            className={`textarea input-wrapper w-full ${
-                                errors.description
-                                    ? "border-red-500"
-                                    : ""
-                            }`}
+                            className={`textarea input-wrapper w-full ${errors.description
+                                ? "border-red-500"
+                                : ""
+                                }`}
                             placeholder="Describe what this action is for..."
                             value={description}
                             maxLength={MAX_DESCRIPTION_LENGTH}
@@ -145,29 +150,23 @@ function ActionModal({
                             }
                         />
 
-                        <div className="flex justify-between text-xs">
-                            <span className="text-red-600">
-                                {errors.description}
-                            </span>
+                        <span className="text-red-600 text-xs">
+                            {errors.description}
+                        </span>
 
-                            <span className="opacity-60 ml-auto">
-                                {description.length}/{MAX_DESCRIPTION_LENGTH}
-                            </span>
-                        </div>
                     </div>
 
                     {/* Category */}
-                    <div className="space-y-1">
+                    <div>
                         <label className="text-sm font-bold">
                             Category
                         </label>
 
                         <select
-                            className={`select input-wrapper w-full ${
-                                errors.category
-                                    ? "border-red-500"
-                                    : ""
-                            }`}
+                            className={`select input-wrapper w-full ${errors.category
+                                ? "border-red-500"
+                                : ""
+                                }`}
                             value={category}
                             onChange={(event) =>
                                 setCategory(event.target.value)

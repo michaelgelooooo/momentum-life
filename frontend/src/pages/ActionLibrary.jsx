@@ -102,11 +102,9 @@ function ActionLibrary() {
             <div className="section-wrapper p-4 lg:p-8 h-[88vh] flex flex-col space-y-4">
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="section-heading font-modak text-4xl lg:text-6xl">
-                            Action Library
-                        </h1>
-                    </div>
+                    <h1 className="section-heading font-modak text-4xl lg:text-6xl">
+                        Action Library
+                    </h1>
 
                     <button
                         className="btn btn-wrapper btn-circle btn-lg lg:btn-xl bg-rose-500"
@@ -132,15 +130,15 @@ function ActionLibrary() {
                 <div className="card-wrapper flex-1 min-h-0 overflow-y-scroll scrollbar-none">
                     {actions.length === 0 ? (
                         <div className="h-full flex items-center justify-center">
-                            <div className="text-center space-y-3">
-                                <i className="fas fa-folder-open text-4xl opacity-50"></i>
+                            <div className="text-center space-y-2 opacity-75">
+                                <i className="fas fa-folder-open text-4xl"></i>
 
                                 <div>
                                     <h2 className="font-bold text-xl">
                                         Your Action Library Is Empty
                                     </h2>
 
-                                    <p className="text-sm opacity-75">
+                                    <p className="text-sm">
                                         Add an action to start building your library.
                                     </p>
                                 </div>
@@ -148,15 +146,15 @@ function ActionLibrary() {
                         </div>
                     ) : filteredActions.length === 0 ? (
                         <div className="h-full flex items-center justify-center">
-                            <div className="text-center space-y-3">
-                                <i className="fas fa-magnifying-glass text-4xl opacity-50"></i>
+                            <div className="text-center space-y-2 opacity-75">
+                                <i className="fas fa-magnifying-glass text-4xl"></i>
 
                                 <div>
                                     <h2 className="font-bold text-xl">
                                         No Actions Found
                                     </h2>
 
-                                    <p className="text-sm opacity-75">
+                                    <p className="text-sm">
                                         Try adjusting your search or category filter.
                                     </p>
                                 </div>
