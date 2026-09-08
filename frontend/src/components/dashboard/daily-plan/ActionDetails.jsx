@@ -12,8 +12,10 @@ function ActionDetails({
     action,
     report,
     setReport,
+    isOpen,
+    onClose,
 }) {
-    const drawerId = `drawer-${action.id}`;
+    const drawerId = "action-details-drawer";
     const categories = getCategories();
 
     const category = categories.find(
@@ -85,21 +87,18 @@ function ActionDetails({
 
 
     return (
-        <div className="drawer drawer-end w-auto">
+        <div className="drawer drawer-end">
             <input
                 id={drawerId}
                 type="checkbox"
                 className="drawer-toggle"
+                checked={isOpen}
+                onChange={(event) => {
+                    if (!event.target.checked) {
+                        onClose();
+                    }
+                }}
             />
-
-            <div className="drawer-content">
-                <label
-                    htmlFor={drawerId}
-                    className="drawer-button btn btn-wrapper btn-square btn-sm bg-rose-500"
-                >
-                    <i className="fas fa-info"></i>
-                </label>
-            </div>
 
             <div className="drawer-side">
                 <label
@@ -108,7 +107,7 @@ function ActionDetails({
                     className="drawer-overlay"
                 ></label>
 
-                <div className="menu bg-rose-100 h-full w-full lg:w-160 p-4 space-y-4 flex flex-col overflow-hidden">
+                <div className="menu bg-rose-100 h-full w-full lg:w-1/3 p-4 space-y-4 flex flex-col overflow-hidden">
                     <div className="section-wrapper flex items-center justify-between p-2 lg:p-4">
                         <h1 className="section-heading font-modak text-2xl lg:text-4xl">
                             Action Details
@@ -117,6 +116,7 @@ function ActionDetails({
                         <label
                             htmlFor={drawerId}
                             className="btn btn-wrapper btn-circle bg-rose-500"
+                            onClick={onClose}
                         >
                             <i className="fas fa-xmark"></i>
                         </label>

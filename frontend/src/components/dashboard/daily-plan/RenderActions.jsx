@@ -6,6 +6,9 @@ import { getCategories } from "../../../storage/categories";
 import { saveCurrentDailyReport } from "../../../storage/dailyReports";
 
 function RenderActions({ report, setReport }) {
+    const [selectedActionId, setSelectedActionId] = useState(null);
+    const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
     const [currentMinutes, setCurrentMinutes] = useState(() => {
         const now = new Date();
 
@@ -16,6 +19,9 @@ function RenderActions({ report, setReport }) {
     const actionsContainerRef = useRef(null);
 
     const categories = getCategories();
+    const selectedAction = report.actions.find(
+        (action) => action.id === selectedActionId
+    );
 
     function toggleAction(actionId) {
         setReport((currentReport) => {
@@ -169,7 +175,7 @@ function RenderActions({ report, setReport }) {
 
                         <div
                             className={`inner-card-wrapper ${action.status === "completed"
-                                ? "bg-rose-200 border-dashed"
+                                ? "bg-rose-200 border-black/25!"
                                 : isCurrent
                                     ? "bg-rose-400"
                                     : "bg-rose-100"
@@ -179,7 +185,7 @@ function RenderActions({ report, setReport }) {
                                 <div className="flex items-center gap-2">
                                     <input
                                         type="checkbox"
-                                        className="checkbox checkbox-wrapper checkbox-lg lg:checkbox-xl"
+                                        className="checkbox checkbox-wrapper checkbox-lg lg:checkbox-xl checked:opacity-75"
                                         checked={
                                             action.status === "completed"
                                         }
@@ -229,12 +235,16 @@ function RenderActions({ report, setReport }) {
                                     </div>
                                 </div>
 
-                                <ActionDetails
-                                    action={action}
-                                    report={report}
-                                    setReport={setReport}
-                                    categories={category}
-                                />
+                                <button
+                                    type="button"
+                                    className={`drawer-button btn btn-wrapper btn-square btn-sm bg-rose-500 ${action.status === "completed" ? "opacity-75" : ""}`}
+                                    onClick={() => {
+                                        setSelectedActionId(action.id);
+                                        setIsDetailsOpen(true);
+                                    }}
+                                >
+                                    <i className="fas fa-info"></i>
+                                </button>
                             </div>
                             <p
                                 className={`text-xs ${action.status === "completed"
@@ -248,6 +258,16 @@ function RenderActions({ report, setReport }) {
                     </div>
                 );
             })}
+
+            {selectedAction && (
+                <ActionDetails
+                    action={selectedAction}
+                    report={report}
+                    setReport={setReport}
+                    isOpen={isDetailsOpen}
+                    onClose={() => setIsDetailsOpen(false)}
+                />
+            )}
         </div>
     );
 }

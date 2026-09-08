@@ -29,7 +29,7 @@ function TemplateList({
                                 key={plan.id}
                                 type="button"
                                 onClick={() => setSelectedPlanId(plan.id)}
-                                className={`inner-card-wrapper bg-rose-100 shrink-0 w-48 lg:w-full text-left p-2 lg:p-4 space-y-1 lg:space-y-2 ${isSelected ? "" : "opacity-50"
+                                className={`inner-card-wrapper bg-rose-100 shrink-0 w-48 lg:w-full text-left p-2 lg:p-4 space-y-1 lg:space-y-2 ${isSelected ? "" : "opacity-50 border-black/50!"
                                     }`}
                             >
                                 <h2 className="font-bold text-base lg:text-xl truncate">

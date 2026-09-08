@@ -89,12 +89,12 @@ function RenderTasks({
                                 key={task.id}
                                 className={`inner-card-wrapper ${
                                     task.status === "completed"
-                                        ? "bg-rose-200 border-dashed"
+                                        ? "bg-rose-200 border-black/25!"
                                         : "bg-rose-100"
                                 } p-2 w-full space-y-1`}
                             >
                                 {!actionId && (
-                                    <span className="badge-wrapper bg-rose-400 gap-1">
+                                    <span className={`badge-wrapper bg-rose-400 gap-1 ${task.status === "completed" ? "opacity-75" : ""}`}>
                                         <span className="font-bold">
                                             {action.time}
                                         </span>
@@ -113,7 +113,7 @@ function RenderTasks({
                                     <div className="flex items-center gap-2 min-w-0">
                                         <input
                                             type="checkbox"
-                                            className="checkbox checkbox-wrapper checkbox-sm"
+                                            className="checkbox checkbox-wrapper checkbox-sm checked:opacity-75"
                                             checked={
                                                 task.status === "completed"
                                             }
@@ -137,7 +137,7 @@ function RenderTasks({
                                     </div>
 
                                     <button
-                                        className="btn btn-wrapper btn-square btn-xs bg-rose-500"
+                                        className={`btn btn-wrapper btn-square btn-xs bg-rose-500 ${task.status === "completed" ? "opacity-75" : ""}`}
                                         onClick={() =>
                                             deleteTask(
                                                 action.id,

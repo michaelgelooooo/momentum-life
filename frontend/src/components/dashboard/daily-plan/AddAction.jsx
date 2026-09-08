@@ -11,6 +11,8 @@ function AddAction({
     actions,
     report,
     setReport,
+    onAddAction,
+    compact = false,
 }) {
     const [selectedActionId, setSelectedActionId] =
         useState("");
@@ -40,7 +42,11 @@ function AddAction({
             return;
         }
 
-        addAction(action, actionTime);
+        if (onAddAction) {
+            onAddAction(action, actionTime);
+        } else {
+            addAction(action, actionTime);
+        }
 
         setSelectedActionId("");
         setActionTime("");
@@ -101,7 +107,10 @@ function AddAction({
             <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-wrapper btn-circle btn-lg lg:btn-xl bg-rose-500"
+                className={`btn btn-wrapper btn-circle ${compact
+                    ? ""
+                    : "btn-lg lg:btn-xl"
+                    } bg-rose-500`}
             >
                 <i className="fas fa-plus font-bold"></i>
             </div>

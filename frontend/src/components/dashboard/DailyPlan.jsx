@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import AddAction from "./daily-plan/AddAction";
 import RenderActions from "./daily-plan/RenderActions";
 
@@ -6,6 +8,8 @@ function DailyPlan({
     setReport,
     actions,
 }) {
+    const navigate = useNavigate();
+
     return (
         <section
             className="section-wrapper p-4 lg:p-8 space-y-4 h-[88vh] flex flex-col scroll-mt-24"
@@ -46,6 +50,7 @@ function DailyPlan({
 
                         <button
                             type="button"
+                            onClick={() => navigate("/templates")}
                             className="btn btn-wrapper bg-rose-500"
                         >
                             <i className="fas fa-calendar-check"></i>

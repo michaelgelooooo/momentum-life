@@ -161,7 +161,7 @@ function ActionLibrary() {
                             </div>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
                             {filteredActions.map((action) => {
                                 const category = categories.find(
                                     (category) => category.value === action.category
