@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { getActions } from "../storage/actions";
-import { getDailyPlans } from "../storage/dailyPlans";
-import { getCurrentDailyReport } from "../storage/dailyReports";
-import { getSettings } from "../storage/settings";
+import { getActions } from "../features/actions/actionStorage";
+import { getCurrentDailyReport } from "../features/dailyReport/dailyReportStorage";
 
 import DailyPlan from "../components/dashboard/DailyPlan";
 import ToDo from "../components/dashboard/ToDo";
@@ -14,26 +12,18 @@ import Dock from "../components/layout/Dock";
 function Dashboard() {
     const [report, setReport] = useState(null);
     const [actions, setActions] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const storedActions = getActions();
-        const plans = getDailyPlans();
-        const settings = getSettings();
-
-        const defaultPlan = plans.find(
-            (plan) => plan.id === settings.defaultDailyPlanId
-        );
-
-        const currentReport = getCurrentDailyReport(
-            defaultPlan,
-            storedActions
-        );
+        const currentReport = getCurrentDailyReport();
 
         setActions(storedActions);
         setReport(currentReport);
+        setIsLoading(false);
     }, []);
 
-    if (!report) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
@@ -66,9 +56,8 @@ function Dashboard() {
                     </div>
                 </section>
 
-
             </div>
-            
+
             <Dock />
         </>
     );

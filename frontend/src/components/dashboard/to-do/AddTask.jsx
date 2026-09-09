@@ -1,7 +1,5 @@
-import {
-    addTaskToAction,
-    saveCurrentDailyReport,
-} from "../../../storage/dailyReports";
+import { addTaskToAction } from "../../../features/dailyReport/dailyReportService";
+import { saveCurrentDailyReport } from "../../../features/dailyReport/dailyReportStorage";
 
 function AddTask({
     report,
@@ -28,17 +26,14 @@ function AddTask({
     }
 
     function handleAddTask(actionId, taskName) {
-        setReport((currentReport) => {
-            const updatedReport = addTaskToAction(
-                currentReport,
-                actionId,
-                taskName
-            );
+        const updatedReport = addTaskToAction(
+            report,
+            actionId,
+            taskName
+        );
 
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
     }
 
     return (

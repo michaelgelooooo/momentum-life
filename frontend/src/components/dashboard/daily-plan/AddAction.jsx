@@ -1,8 +1,18 @@
 import { useState } from "react";
-import { generateId } from "../../../utils/ids";
-import { saveCurrentDailyReport } from "../../../storage/dailyReports";
 
-function AddAction({ actions, report, setReport }) {
+import {
+    addActionToReport,
+    createEmptyDailyReport,
+} from "../../../features/dailyReport/dailyReportService";
+import { saveCurrentDailyReport } from "../../../features/dailyReport/dailyReportStorage";
+
+function AddAction({
+    actions,
+    report,
+    setReport,
+    onAddAction,
+    compact = false,
+}) {
     const [selectedActionId, setSelectedActionId] =
         useState("");
 
@@ -10,7 +20,9 @@ function AddAction({ actions, report, setReport }) {
         useState("");
 
     const usedTimes = new Set(
-        report.actions.map((action) => action.time)
+        report?.actions.map(
+            (action) => action.time
+        ) ?? []
     );
 
     function handleAddAction(event) {
@@ -21,60 +33,38 @@ function AddAction({ actions, report, setReport }) {
         }
 
         const action = actions.find(
-            (action) => action.id === selectedActionId
+            (action) =>
+                action.id === selectedActionId
         );
 
         if (!action) {
             return;
         }
 
-        addAction(action, actionTime);
+        if (onAddAction) {
+            onAddAction(action, actionTime);
+        } else {
+            addAction(action, actionTime);
+        }
 
         setSelectedActionId("");
         setActionTime("");
     }
 
     function addAction(action, time) {
-        if (!/^\d{2}:00$/.test(time)) {
+        const currentReport = report ?? createEmptyDailyReport();
+        const updatedReport = addActionToReport(
+            currentReport,
+            action,
+            time
+        );
+
+        if (updatedReport === currentReport) {
             return;
         }
 
-        setReport((currentReport) => {
-            const timeAlreadyUsed = currentReport.actions.some(
-                (existingAction) =>
-                    existingAction.time === time
-            );
-
-            if (timeAlreadyUsed) {
-                return currentReport;
-            }
-
-            const newAction = {
-                id: generateId("day-action"),
-                actionId: action.id,
-                name: action.name,
-                description: action.description,
-                category: action.category,
-                time,
-                status: "pending",
-                tasks: [],
-            };
-
-            const updatedReport = {
-                ...currentReport,
-
-                actions: [
-                    ...currentReport.actions,
-                    newAction,
-                ].sort((a, b) =>
-                    a.time.localeCompare(b.time)
-                ),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
     }
 
     return (
@@ -82,7 +72,10 @@ function AddAction({ actions, report, setReport }) {
             <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-wrapper btn-circle btn-lg lg:btn-xl  bg-rose-500"
+                className={`btn btn-wrapper btn-circle ${compact
+                    ? ""
+                    : "btn-lg lg:btn-xl"
+                    } bg-rose-500`}
             >
                 <i className="fas fa-plus font-bold"></i>
             </div>
@@ -112,21 +105,28 @@ function AddAction({ actions, report, setReport }) {
                                 className="select input-wrapper"
                                 value={selectedActionId}
                                 onChange={(event) =>
-                                    setSelectedActionId(event.target.value)
+                                    setSelectedActionId(
+                                        event.target.value
+                                    )
                                 }
                             >
-                                <option value="" disabled>
+                                <option
+                                    value=""
+                                    disabled
+                                >
                                     Select Action
                                 </option>
 
-                                {actions.map((action) => (
-                                    <option
-                                        key={action.id}
-                                        value={action.id}
-                                    >
-                                        {action.name}
-                                    </option>
-                                ))}
+                                {actions.map(
+                                    (action) => (
+                                        <option
+                                            key={action.id}
+                                            value={action.id}
+                                        >
+                                            {action.name}
+                                        </option>
+                                    )
+                                )}
                             </select>
                         </div>
 
@@ -140,18 +140,25 @@ function AddAction({ actions, report, setReport }) {
                                 className="select input-wrapper"
                                 value={actionTime}
                                 onChange={(event) =>
-                                    setActionTime(event.target.value)
+                                    setActionTime(
+                                        event.target.value
+                                    )
                                 }
                             >
-                                <option value="" disabled>
+                                <option
+                                    value=""
+                                    disabled
+                                >
                                     Select Time
                                 </option>
 
                                 {Array.from(
-                                    { length: 24 },
-                                    (_, hour) => {
-                                        const time =
-                                            `${String(hour).padStart(2, "0")}:00`;
+                                    { length: 48 },
+                                    (_, index) => {
+                                        const hour = Math.floor(index / 2);
+                                        const minute = index % 2 === 0 ? "00" : "30";
+
+                                        const time = `${String(hour).padStart(2, "0")}:${minute}`;
 
                                         if (usedTimes.has(time)) {
                                             return null;

@@ -1,5 +1,5 @@
-import { seedActions } from "../data/seedActions";
-import { STORAGE_KEYS } from "./storageKeys";
+import { seedActions } from "../../data/seedActions";
+import { STORAGE_KEYS } from "../../storage/storageKeys";
 
 export function getActions() {
     const stored = localStorage.getItem(STORAGE_KEYS.ACTIONS);

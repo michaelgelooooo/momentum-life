@@ -34,7 +34,7 @@ function Navbar() {
                     })}
                 </div>
 
-                <div className="font-extrabold hidden lg:block text-base leading-none">
+                <div className="font-extrabold hidden lg:block text-sm">
                     {currentTime.toLocaleDateString("en-GB", {
                         weekday: "long",
                         day: "2-digit",
@@ -43,7 +43,7 @@ function Navbar() {
                     })}
                 </div>
 
-                <div className="font-extrabold text-sm lg:hidden leading-none">
+                <div className="font-extrabold text-xs lg:text-sm lg:hidden">
                     {currentTime.toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "short",
@@ -89,7 +89,7 @@ function Navbar() {
                             </li>
 
                             <li className="dropdown-item-wrapper">
-                                <Link to="/">
+                                <Link to="/templates">
                                     <i className="fas fa-calendar-days"></i>
                                     Plan Templates
                                 </Link>

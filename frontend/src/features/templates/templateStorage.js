@@ -1,22 +1,22 @@
-import { defaultDailyPlans } from "../data/seedDailyPlans";
-import { STORAGE_KEYS } from "./storageKeys";
+import { seedDailyPlans } from "../../data/seedDailyPlans";
+import { STORAGE_KEYS } from "../../storage/storageKeys";
 
-export function getDailyPlans() {
+export function getTemplates() {
     const stored = localStorage.getItem(STORAGE_KEYS.DAILY_PLANS);
 
     if (!stored) {
         localStorage.setItem(
             STORAGE_KEYS.DAILY_PLANS,
-            JSON.stringify(defaultDailyPlans)
+            JSON.stringify(seedDailyPlans)
         );
 
-        return defaultDailyPlans;
+        return seedDailyPlans;
     }
 
     return JSON.parse(stored);
 }
 
-export function saveDailyPlans(plans) {
+export function saveTemplates(plans) {
     localStorage.setItem(
         STORAGE_KEYS.DAILY_PLANS,
         JSON.stringify(plans)

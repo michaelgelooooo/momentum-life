@@ -3,16 +3,26 @@ import { useState } from "react";
 import AddTask from "../to-do/AddTask";
 import RenderTasks from "../to-do/RenderTasks";
 
+import { getCategories } from "../../../features/categories/categoryStorage";
 import {
-    saveCurrentDailyReport,
-} from "../../../storage/dailyReports";
+    deleteAction,
+    updateActionTime,
+} from "../../../features/dailyReport/dailyReportService";
+import { saveCurrentDailyReport } from "../../../features/dailyReport/dailyReportStorage";
 
 function ActionDetails({
     action,
     report,
     setReport,
+    isOpen,
+    onClose,
 }) {
-    const drawerId = `drawer-${action.id}`;
+    const drawerId = "action-details-drawer";
+    const categories = getCategories();
+
+    const category = categories.find(
+        (item) => item.value === action.category
+    );
 
     const usedTimes = report.actions
         .filter((currentAction) => currentAction.id !== action.id)
@@ -23,81 +33,40 @@ function ActionDetails({
 
     function handleTimeChange(event) {
         const newTime = event.target.value;
+        const updatedReport = updateActionTime(
+            report,
+            action.id,
+            newTime
+        );
 
-        setReport((currentReport) => {
-            const timeAlreadyUsed = currentReport.actions.some(
-                (currentAction) =>
-                    currentAction.id !== action.id &&
-                    currentAction.time === newTime
-            );
-
-            if (timeAlreadyUsed) {
-                return currentReport;
-            }
-
-            const updatedReport = {
-                ...currentReport,
-
-                actions: currentReport.actions
-                    .map((currentAction) => {
-                        if (currentAction.id !== action.id) {
-                            return currentAction;
-                        }
-
-                        return {
-                            ...currentAction,
-                            time: newTime,
-                        };
-                    })
-                    .sort((a, b) =>
-                        a.time.localeCompare(b.time)
-                    ),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
     }
 
-    function deleteAction() {
-        setReport((currentReport) => {
-            const updatedReport = {
-                ...currentReport,
+    function handleDeleteAction() {
+        const updatedReport = deleteAction(report, action.id);
 
-                actions: currentReport.actions.filter(
-                    (currentAction) => currentAction.id !== action.id
-                ),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
+        setShowDeleteConfirm(false);
+        onClose();
     }
 
-    const categoryIcons = {
-        productive: "fa-arrow-trend-up",
-        routine: "fa-arrows-rotate",
-        leisure: "fa-mug-hot",
-    };
+
 
     return (
-        <div className="drawer drawer-end w-auto">
+        <div className="drawer drawer-end">
             <input
                 id={drawerId}
                 type="checkbox"
                 className="drawer-toggle"
+                checked={isOpen}
+                onChange={(event) => {
+                    if (!event.target.checked) {
+                        onClose();
+                    }
+                }}
             />
-
-            <div className="drawer-content">
-                <label
-                    htmlFor={drawerId}
-                    className="drawer-button btn btn-wrapper btn-square btn-sm bg-rose-500"
-                >
-                    <i className="fas fa-info"></i>
-                </label>
-            </div>
 
             <div className="drawer-side">
                 <label
@@ -106,7 +75,7 @@ function ActionDetails({
                     className="drawer-overlay"
                 ></label>
 
-                <div className="menu bg-rose-100 h-full w-full lg:w-160 p-4 space-y-4 flex flex-col overflow-hidden">
+                <div className="menu bg-rose-100 h-full w-full lg:w-1/3 p-4 space-y-4 flex flex-col overflow-hidden">
                     <div className="section-wrapper flex items-center justify-between p-2 lg:p-4">
                         <h1 className="section-heading font-modak text-2xl lg:text-4xl">
                             Action Details
@@ -115,6 +84,7 @@ function ActionDetails({
                         <label
                             htmlFor={drawerId}
                             className="btn btn-wrapper btn-circle bg-rose-500"
+                            onClick={onClose}
                         >
                             <i className="fas fa-xmark"></i>
                         </label>
@@ -140,11 +110,12 @@ function ActionDetails({
 
                         <div className="flex items-center gap-2 text-xs font-bold tracking-widest opacity-60">
                             <i
-                                className={`fas ${categoryIcons[action.category] ?? "fa-circle-question"
+                                className={`fas ${category?.icon ?? "fa-circle-question"
                                     } me-1`}
-                            ></i>
+                            />
+
                             <span className="uppercase">
-                                {action.category}
+                                {category?.name ?? action.category}
                             </span>
                         </div>
 
@@ -244,7 +215,7 @@ function ActionDetails({
                             </p>
 
 
-                            <div className="card-wrapper">
+                            <div className="card-wrapper rounded-lg!">
                                 {action.tasks.length > 0 ? (
                                     <div className="space-y-1">
                                         <p className="text-sm font-bold">
@@ -281,7 +252,7 @@ function ActionDetails({
                             <button
                                 type="button"
                                 className="btn btn-wrapper  bg-rose-500"
-                                onClick={deleteAction}
+                                onClick={handleDeleteAction}
                             >
                                 <i className="fas fa-trash"></i>
                                 DELETE
