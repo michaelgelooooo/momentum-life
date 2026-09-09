@@ -3,10 +3,12 @@ import { useState } from "react";
 import AddTask from "../to-do/AddTask";
 import RenderTasks from "../to-do/RenderTasks";
 
-import { getCategories } from "../../../storage/categories";
+import { getCategories } from "../../../features/categories/categoryStorage";
 import {
-    saveCurrentDailyReport,
-} from "../../../storage/dailyReports";
+    deleteAction,
+    updateActionTime,
+} from "../../../features/dailyReport/dailyReportService";
+import { saveCurrentDailyReport } from "../../../features/dailyReport/dailyReportStorage";
 
 function ActionDetails({
     action,
@@ -31,57 +33,23 @@ function ActionDetails({
 
     function handleTimeChange(event) {
         const newTime = event.target.value;
+        const updatedReport = updateActionTime(
+            report,
+            action.id,
+            newTime
+        );
 
-        setReport((currentReport) => {
-            const timeAlreadyUsed = currentReport.actions.some(
-                (currentAction) =>
-                    currentAction.id !== action.id &&
-                    currentAction.time === newTime
-            );
-
-            if (timeAlreadyUsed) {
-                return currentReport;
-            }
-
-            const updatedReport = {
-                ...currentReport,
-
-                actions: currentReport.actions
-                    .map((currentAction) => {
-                        if (currentAction.id !== action.id) {
-                            return currentAction;
-                        }
-
-                        return {
-                            ...currentAction,
-                            time: newTime,
-                        };
-                    })
-                    .sort((a, b) =>
-                        a.time.localeCompare(b.time)
-                    ),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
     }
 
-    function deleteAction() {
-        setReport((currentReport) => {
-            const updatedReport = {
-                ...currentReport,
+    function handleDeleteAction() {
+        const updatedReport = deleteAction(report, action.id);
 
-                actions: currentReport.actions.filter(
-                    (currentAction) => currentAction.id !== action.id
-                ),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
+        setShowDeleteConfirm(false);
+        onClose();
     }
 
 
@@ -284,7 +252,7 @@ function ActionDetails({
                             <button
                                 type="button"
                                 className="btn btn-wrapper  bg-rose-500"
-                                onClick={deleteAction}
+                                onClick={handleDeleteAction}
                             >
                                 <i className="fas fa-trash"></i>
                                 DELETE

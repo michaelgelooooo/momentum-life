@@ -1,4 +1,8 @@
-import { saveCurrentDailyReport } from "../../../storage/dailyReports";
+import {
+    deleteTask,
+    toggleTask,
+} from "../../../features/dailyReport/dailyReportService";
+import { saveCurrentDailyReport } from "../../../features/dailyReport/dailyReportStorage";
 
 function RenderTasks({
     report,
@@ -7,66 +11,18 @@ function RenderTasks({
 }) {
     const actions = report?.actions ?? [];
 
-    function toggleTask(actionId, taskId) {
-        setReport((currentReport) => {
-            const updatedReport = {
-                ...currentReport,
+    function handleToggleTask(actionId, taskId) {
+        const updatedReport = toggleTask(report, actionId, taskId);
 
-                actions: currentReport.actions.map((action) => {
-                    if (action.id !== actionId) {
-                        return action;
-                    }
-
-                    return {
-                        ...action,
-
-                        tasks: action.tasks.map((task) => {
-                            if (task.id !== taskId) {
-                                return task;
-                            }
-
-                            return {
-                                ...task,
-                                status:
-                                    task.status === "completed"
-                                        ? "pending"
-                                        : "completed",
-                            };
-                        }),
-                    };
-                }),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
     }
 
-    function deleteTask(actionId, taskId) {
-        setReport((currentReport) => {
-            const updatedReport = {
-                ...currentReport,
+    function handleDeleteTask(actionId, taskId) {
+        const updatedReport = deleteTask(report, actionId, taskId);
 
-                actions: currentReport.actions.map((action) => {
-                    if (action.id !== actionId) {
-                        return action;
-                    }
-
-                    return {
-                        ...action,
-
-                        tasks: action.tasks.filter(
-                            (task) => task.id !== taskId
-                        ),
-                    };
-                }),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
     }
 
     const visibleActions = actionId
@@ -87,11 +43,10 @@ function RenderTasks({
                         action.tasks.map((task) => (
                             <div
                                 key={task.id}
-                                className={`inner-card-wrapper ${
-                                    task.status === "completed"
-                                        ? "bg-rose-200 border-black/25!"
-                                        : "bg-rose-100"
-                                } p-2 w-full space-y-1`}
+                                className={`inner-card-wrapper ${task.status === "completed"
+                                    ? "bg-rose-200 border-black/25!"
+                                    : "bg-rose-100"
+                                    } p-2 w-full space-y-1`}
                             >
                                 {!actionId && (
                                     <span className={`badge-wrapper bg-rose-400 gap-1 ${task.status === "completed" ? "opacity-75" : ""}`}>
@@ -118,7 +73,7 @@ function RenderTasks({
                                                 task.status === "completed"
                                             }
                                             onChange={() =>
-                                                toggleTask(
+                                                handleToggleTask(
                                                     action.id,
                                                     task.id
                                                 )
@@ -126,11 +81,10 @@ function RenderTasks({
                                         />
 
                                         <span
-                                            className={`font-semibold text-xs lg:text-sm ${
-                                                task.status === "completed"
-                                                    ? "line-through opacity-50"
-                                                    : ""
-                                            }`}
+                                            className={`font-semibold text-xs lg:text-sm ${task.status === "completed"
+                                                ? "line-through opacity-50"
+                                                : ""
+                                                }`}
                                         >
                                             {task.name}
                                         </span>
@@ -139,7 +93,7 @@ function RenderTasks({
                                     <button
                                         className={`btn btn-wrapper btn-square btn-xs bg-rose-500 ${task.status === "completed" ? "opacity-75" : ""}`}
                                         onClick={() =>
-                                            deleteTask(
+                                            handleDeleteTask(
                                                 action.id,
                                                 task.id
                                             )

@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 import ActionDetails from "./ActionDetails";
 
-import { getCategories } from "../../../storage/categories";
-import { saveCurrentDailyReport } from "../../../storage/dailyReports";
+import { getCategories } from "../../../features/categories/categoryStorage";
+import { toggleAction } from "../../../features/dailyReport/dailyReportService";
+import { saveCurrentDailyReport } from "../../../features/dailyReport/dailyReportStorage";
 
 function RenderActions({ report, setReport }) {
     const [selectedActionId, setSelectedActionId] = useState(null);
@@ -23,33 +24,11 @@ function RenderActions({ report, setReport }) {
         (action) => action.id === selectedActionId
     );
 
-    function toggleAction(actionId) {
-        setReport((currentReport) => {
-            const updatedReport = {
-                ...currentReport,
+    function handleToggleAction(actionId) {
+        const updatedReport = toggleAction(report, actionId);
 
-                actions: currentReport.actions.map(
-                    (action) => {
-                        if (action.id !== actionId) {
-                            return action;
-                        }
-
-                        return {
-                            ...action,
-
-                            status:
-                                action.status === "completed"
-                                    ? "pending"
-                                    : "completed",
-                        };
-                    }
-                ),
-            };
-
-            saveCurrentDailyReport(updatedReport);
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
     }
 
     function timeToMinutes(time) {
@@ -191,7 +170,7 @@ function RenderActions({ report, setReport }) {
                                         }
                                         disabled={!isAvailable}
                                         onChange={() =>
-                                            toggleAction(action.id)
+                                            handleToggleAction(action.id)
                                         }
                                     />
 

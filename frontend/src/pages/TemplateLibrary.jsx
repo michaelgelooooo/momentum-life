@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { getActions } from "../storage/actions";
-import { getDailyPlans, saveDailyPlans } from "../storage/dailyPlans";
+import { getActions } from "../features/actions/actionStorage";
+import { getTemplates, saveTemplates } from "../features/templates/templateStorage";
 import { generateId } from "../utils/ids";
 
 import TemplateList from "../components/template-library/TemplateList";
@@ -47,7 +47,7 @@ function TemplateLibrary() {
                 )
                 : [...currentPlans, savedTemplate];
 
-            saveDailyPlans(updatedPlans);
+            saveTemplates(updatedPlans);
 
             return updatedPlans;
         });
@@ -65,7 +65,7 @@ function TemplateLibrary() {
                     : plan
             );
 
-            saveDailyPlans(updatedPlans);
+            saveTemplates(updatedPlans);
 
             return updatedPlans;
         });
@@ -77,7 +77,7 @@ function TemplateLibrary() {
                 (plan) => plan.id !== template.id
             );
 
-            saveDailyPlans(updatedPlans);
+            saveTemplates(updatedPlans);
 
             return updatedPlans;
         });
@@ -91,7 +91,7 @@ function TemplateLibrary() {
     }
 
     useEffect(() => {
-        const storedPlans = getDailyPlans();
+        const storedPlans = getTemplates();
         const storedActions = getActions();
 
         setPlans(storedPlans);

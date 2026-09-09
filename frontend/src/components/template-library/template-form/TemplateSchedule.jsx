@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import AddAction from "../../dashboard/daily-plan/AddAction";
-import { getCategories } from "../../../storage/categories";
+import { getCategories } from "../../../features/categories/categoryStorage";
 
 function TemplateSchedule({
     plan,

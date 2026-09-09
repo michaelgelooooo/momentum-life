@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { generateId } from "../../utils/ids";
+import {
+    addTemplateAction,
+    addTemplateTask,
+    deleteTemplateAction,
+    deleteTemplateTask,
+    updateTemplateActionTime,
+} from "../../features/templates/templateService";
 
 import DeleteTemplate from "./template-form/DeleteTemplate";
 import TemplateFields from "./template-form/TemplateFields";
@@ -68,94 +74,72 @@ function TemplateForm({
         });
     }
 
-    function addTemplateAction(action, time) {
-        const updatedActions = [
-            ...templateActions,
-            {
-                actionId: action.id,
-                time,
-                tasks: [],
-            },
-        ].sort((firstAction, secondAction) =>
-            firstAction.time.localeCompare(secondAction.time)
+    function handleAddTemplateAction(action, time) {
+        const updatedPlan = addTemplateAction(
+            { ...(plan ?? {}), actions: templateActions },
+            action,
+            time
         );
+
+        const updatedActions = updatedPlan.actions;
 
         setTemplateActions(updatedActions);
         onUpdateActions(plan, updatedActions);
     }
 
-    function deleteTemplateAction(actionIndex) {
-        const updatedActions = templateActions.filter(
-            (_, index) => index !== actionIndex
+    function handleDeleteTemplateAction(actionIndex) {
+        const updatedPlan = deleteTemplateAction(
+            { ...(plan ?? {}), actions: templateActions },
+            actionIndex
         );
+
+        const updatedActions = updatedPlan.actions;
 
         setTemplateActions(updatedActions);
         onUpdateActions(plan, updatedActions);
     }
 
-    function updateTemplateActionTime(actionIndex, time) {
-        const timeAlreadyUsed = templateActions.some(
-            (templateAction, currentActionIndex) =>
-                currentActionIndex !== actionIndex &&
-                templateAction.time === time
+    function handleUpdateTemplateActionTime(actionIndex, time) {
+        const updatedPlan = updateTemplateActionTime(
+            { ...(plan ?? {}), actions: templateActions },
+            actionIndex,
+            time
         );
 
-        if (timeAlreadyUsed) return;
+        const updatedActions = updatedPlan.actions;
 
-        const updatedActions = templateActions
-            .map((templateAction, currentActionIndex) =>
-                currentActionIndex === actionIndex
-                    ? { ...templateAction, time }
-                    : templateAction
-            )
-            .sort((firstAction, secondAction) =>
-                firstAction.time.localeCompare(secondAction.time)
-            );
+        if (
+            JSON.stringify(updatedActions) ===
+            JSON.stringify(templateActions)
+        ) {
+            return;
+        }
 
         setTemplateActions(updatedActions);
         onUpdateActions(plan, updatedActions);
     }
 
-    function deleteTemplateTask(actionIndex, taskIndex) {
-        const updatedActions = templateActions.map(
-            (templateAction, currentActionIndex) => {
-                if (currentActionIndex !== actionIndex) {
-                    return templateAction;
-                }
-
-                return {
-                    ...templateAction,
-                    tasks: templateAction.tasks.filter(
-                        (_, currentTaskIndex) => currentTaskIndex !== taskIndex
-                    ),
-                };
-            }
+    function handleDeleteTemplateTask(actionIndex, taskIndex) {
+        const updatedPlan = deleteTemplateTask(
+            { ...(plan ?? {}), actions: templateActions },
+            actionIndex,
+            taskIndex
         );
+
+        const updatedActions = updatedPlan.actions;
 
         setTemplateActions(updatedActions);
         onUpdateActions(plan, updatedActions);
     }
 
-    function addTemplateTask(actionIndex, taskName) {
-        const updatedActions = templateActions.map(
-            (templateAction, currentActionIndex) => {
-                if (currentActionIndex !== actionIndex) {
-                    return templateAction;
-                }
-
-                return {
-                    ...templateAction,
-                    tasks: [
-                        ...(templateAction.tasks ?? []),
-                        {
-                            id: generateId("task"),
-                            name: taskName,
-                            status: "pending",
-                        },
-                    ],
-                };
-            }
+    function handleAddTemplateTask(actionIndex, taskName) {
+        const updatedPlan = addTemplateTask(
+            { ...(plan ?? {}), actions: templateActions },
+            actionIndex,
+            taskName
         );
+
+        const updatedActions = updatedPlan.actions;
 
         setTemplateActions(updatedActions);
         onUpdateActions(plan, updatedActions);
@@ -225,11 +209,11 @@ function TemplateForm({
                             plan={plan}
                             actions={actions}
                             templateActions={templateActions}
-                            onAddAction={addTemplateAction}
-                            onUpdateTime={updateTemplateActionTime}
-                            onDeleteAction={deleteTemplateAction}
-                            onDeleteTask={deleteTemplateTask}
-                            onAddTask={addTemplateTask}
+                            onAddAction={handleAddTemplateAction}
+                            onUpdateTime={handleUpdateTemplateActionTime}
+                            onDeleteAction={handleDeleteTemplateAction}
+                            onDeleteTask={handleDeleteTemplateTask}
+                            onAddTask={handleAddTemplateTask}
                         />
                     )}
                 </div>

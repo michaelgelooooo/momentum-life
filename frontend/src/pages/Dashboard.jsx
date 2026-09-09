@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { getActions } from "../storage/actions";
-import { getCurrentDailyReport } from "../storage/dailyReports";
+import { getActions } from "../features/actions/actionStorage";
+import { getCurrentDailyReport } from "../features/dailyReport/dailyReportStorage";
 
 import DailyPlan from "../components/dashboard/DailyPlan";
 import ToDo from "../components/dashboard/ToDo";

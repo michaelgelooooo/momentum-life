@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-import { generateId } from "../../../utils/ids";
-
 import {
+    addActionToReport,
     createEmptyDailyReport,
-    saveCurrentDailyReport,
-} from "../../../storage/dailyReports";
+} from "../../../features/dailyReport/dailyReportService";
+import { saveCurrentDailyReport } from "../../../features/dailyReport/dailyReportStorage";
 
 function AddAction({
     actions,
@@ -53,53 +52,19 @@ function AddAction({
     }
 
     function addAction(action, time) {
-        if (!/^\d{2}:(00|30)$/.test(time)) {
+        const currentReport = report ?? createEmptyDailyReport();
+        const updatedReport = addActionToReport(
+            currentReport,
+            action,
+            time
+        );
+
+        if (updatedReport === currentReport) {
             return;
         }
 
-        setReport((currentReport) => {
-            const baseReport =
-                currentReport ??
-                createEmptyDailyReport();
-
-            const timeAlreadyUsed =
-                baseReport.actions.some(
-                    (existingAction) =>
-                        existingAction.time === time
-                );
-
-            if (timeAlreadyUsed) {
-                return baseReport;
-            }
-
-            const newAction = {
-                id: generateId("day-action"),
-                actionId: action.id,
-                name: action.name,
-                description: action.description,
-                category: action.category,
-                time,
-                status: "pending",
-                tasks: [],
-            };
-
-            const updatedReport = {
-                ...baseReport,
-
-                actions: [
-                    ...baseReport.actions,
-                    newAction,
-                ].sort((a, b) =>
-                    a.time.localeCompare(b.time)
-                ),
-            };
-
-            saveCurrentDailyReport(
-                updatedReport
-            );
-
-            return updatedReport;
-        });
+        setReport(updatedReport);
+        saveCurrentDailyReport(updatedReport);
     }
 
     return (

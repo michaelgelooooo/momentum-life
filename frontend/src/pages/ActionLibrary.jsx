@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 
-import { generateId } from "../utils/ids";
-import { getActions, saveActions } from "../storage/actions";
-import { getCategories } from "../storage/categories";
+import {
+    createAction,
+    deleteAction,
+    filterActions,
+    updateAction,
+} from "../features/actions/actionService";
+import { getActions, saveActions } from "../features/actions/actionStorage";
+import { getCategories } from "../features/categories/categoryStorage";
 
 import ActionModal from "../components/action-library/ActionModal";
 import DeleteAction from "../components/action-library/DeleteAction";
@@ -25,48 +30,17 @@ function ActionLibrary() {
         setCategories(getCategories());
     }, []);
 
-    const filteredActions = actions.filter((action) => {
-        const matchesSearch =
-            action.name
-                .toLowerCase()
-                .includes(filters.search.toLowerCase()) ||
-            action.description
-                .toLowerCase()
-                .includes(filters.search.toLowerCase());
-
-        const matchesCategory =
-            filters.category === "all" ||
-            action.category === filters.category;
-
-        return matchesSearch && matchesCategory;
-    });
+    const filteredActions = filterActions(actions, filters);
 
     function handleSaveAction(actionData) {
         const currentActions = getActions();
 
-        if (actionData.id) {
-            const updatedActions = currentActions.map((action) =>
-                action.id === actionData.id
-                    ? actionData
-                    : action
-            );
+        const updatedActions = actionData.id
+            ? updateAction(currentActions, actionData)
+            : [...currentActions, createAction(actionData)];
 
-            saveActions(updatedActions);
-            setActions(updatedActions);
-        } else {
-            const newAction = {
-                id: generateId("action"),
-                ...actionData,
-            };
-
-            const updatedActions = [
-                ...currentActions,
-                newAction,
-            ];
-
-            saveActions(updatedActions);
-            setActions(updatedActions);
-        }
+        saveActions(updatedActions);
+        setActions(updatedActions);
 
         setSelectedAction(null);
 
@@ -82,8 +56,9 @@ function ActionLibrary() {
     function handleDeleteAction(action) {
         const currentActions = getActions();
 
-        const updatedActions = currentActions.filter(
-            (item) => item.id !== action.id
+        const updatedActions = deleteAction(
+            currentActions,
+            action.id
         );
 
         saveActions(updatedActions);

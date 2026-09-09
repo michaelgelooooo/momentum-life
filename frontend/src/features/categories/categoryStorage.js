@@ -1,5 +1,5 @@
-import { seedCategories } from "../data/seedCategories";
-import { STORAGE_KEYS } from "./storageKeys";
+import { seedCategories } from "../../data/seedCategories";
+import { STORAGE_KEYS } from "../../storage/storageKeys";
 
 export function getCategories() {
     const stored = localStorage.getItem(

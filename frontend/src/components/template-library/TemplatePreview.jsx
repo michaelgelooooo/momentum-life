@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import {
     getCurrentDailyReport,
     startDailyReport,
-} from "../../storage/dailyReports";
+} from "../../features/dailyReport/dailyReportStorage";
 
 function TemplatePreview({ plan, actions, onEdit }) {
     const navigate = useNavigate();
